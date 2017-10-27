@@ -28,12 +28,27 @@ export default class homePage extends Component<{}> {
 
   renderRow(rowData, sectionID, rowID){
     return (
-      <TouchableHighlight onPress={() => console.log(rowData)}>
+      <TouchableHighlight onPress={() => this.goToCoursePage(rowData)}>
         <View>
           <Course courseItem={rowData}/>
         </View>
       </TouchableHighlight>
     );
+  }
+
+  goToCoursePage(course){
+    console.log(course);
+    this.props.navigator.push({
+      screen: 'epres.CoursePage', // unique ID registered with Navigation.registerScreen
+      title: course.name, // navigation bar title of the pushed screen (optional)
+      passProps: { course }, // Object that will be passed as props to the pushed screen (optional)
+      animated: true, // does the push have transition animation or does it happen immediately (optional)
+      // animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the push have different transition animation (optional)
+      // backButtonTitle: undefined, // override the back button title (optional)
+      // backButtonHidden: false, // hide the back button altogether (optional)
+      // navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
+      // navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
+    });
   }
 
   render() {
