@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
-  View,
-  ListView,
+  ScrollView,
 } from 'react-native';
 
 import CourseCard from './../components/courses/courseCard'
@@ -11,15 +11,18 @@ import { coursePageStyles as styles } from './../styles'
 export default class CoursePage extends Component<{}> {
   constructor(props){
     super(props);
-    console.log(this.props);
   }
 
   render(){
     return(
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <CourseCard courseItem={this.props.course} />
         <CourseDrugsList courseItem={this.props.course} />
-      </View>
+      </ScrollView>
     )
   }
+}
+
+CoursePage.propTypes = {
+  course: PropTypes.object
 }

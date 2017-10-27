@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Text, View, Dimensions } from 'react-native';
-import { H1, H2, H3, Progress } from 'nachos-ui';
-import Icon from 'react-native-vector-icons/Ionicons';
+import PropTypes from 'prop-types';
+import { View, Dimensions } from 'react-native';
+import { H1, H3, Progress } from 'nachos-ui';
 import { courseCardStyles as styles } from './../../styles'
 
 export default class CourseCard extends Component {
@@ -60,4 +60,8 @@ export default class CourseCard extends Component {
       </View>
     )
   }
+}
+
+CourseCard.propTypes = {
+  courseItem: PropTypes.object
 }

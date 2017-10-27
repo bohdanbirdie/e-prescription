@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, Dimensions } from 'react-native';
+import PropTypes from 'prop-types';
+import { View } from 'react-native';
 import { H1 } from 'nachos-ui';
-import Icon from 'react-native-vector-icons/Ionicons';
 import Collapsible from 'react-native-collapsible';
 import DatePicker from 'react-native-datepicker'
-
-
 
 import ListItem from './../shared/listItem'
 import { courseDrugsListStyles as styles } from './../../styles'
@@ -14,19 +12,12 @@ export default class CourseDrugsList extends Component {
   constructor(props) {
     super(props);
     const { name, finished, startedAt, medicineList} = this.props.courseItem;
-    // const { icon, color, definition } = this.defineStatus(finished, startedAt)
-    // const { height, width } = Dimensions.get('window');
     this.state = {
       name,
       finished,
       startedAt,
       medicineList,
       openedDrug: null
-      // icon,
-      // color,
-      // definition,
-      // height,
-      // width
     }
   }
 
@@ -73,8 +64,6 @@ export default class CourseDrugsList extends Component {
         format="HH-mm-ss"
         showIcon={false}
         is24Hour={true}
-        // minDate="2016-05-01"
-        // maxDate="2016-06-01"
         confirmBtnText="Confirm"
         cancelBtnText="Cancel"
         customStyles={{
@@ -96,7 +85,6 @@ export default class CourseDrugsList extends Component {
             borderRadius: 0,
             color: '#FF0000'
           }
-          // ... You can check the source to find the other keys.
         }}
         onDateChange={(date) => console.log(date)}
       />
@@ -111,4 +99,8 @@ export default class CourseDrugsList extends Component {
       </View>
     )
   }
+}
+
+CourseDrugsList.propTypes = {
+  courseItem: PropTypes.object
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
-  StyleSheet,
   Text,
   View,
   TouchableHighlight
@@ -17,7 +17,9 @@ export default class ListItem extends Component<{}> {
 
   render(){
     return(
-      <TouchableHighlight underlayColor="gray" onPress={this.props.onPress.bind(this)}>
+      <TouchableHighlight
+        underlayColor="gray"
+        onPress={this.props.onPress.bind(this)}>
       <View style={styles.item}>
         <Icon
           name={this.props.leftIcon}
@@ -36,4 +38,14 @@ export default class ListItem extends Component<{}> {
       </TouchableHighlight>
     )
   }
+}
+
+ListItem.propTypes = {
+  onPress: PropTypes.func,
+  leftIcon: PropTypes.string,
+  leftIconColor: PropTypes.string,
+  iconSize: PropTypes.number,
+  text: PropTypes.string,
+  rightIcon: PropTypes.string,
+  rightIconColor: PropTypes.string,
 }

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
-  Platform,
   StyleSheet,
-  Text,
-  View,
-  // Button
+  View
 } from 'react-native';
 import {
   Input,
@@ -19,8 +17,8 @@ import Spinner from 'react-native-loading-spinner-overlay';
 // import PushController from './pushController';
 
 
-export default class first extends Component<{}> {
-  constructor(props) {
+export default class LoginPage extends Component<{}> {
+  constructor() {
     super();
     this.state = {
       spinnerVisible: true,
@@ -43,43 +41,24 @@ export default class first extends Component<{}> {
       screen: 'epres.HomePage',
       title: 'Medicine list',
       animated: true,
-      // animationType: 'fade'
     });
   }
 
   componentWillMount() {
     app.authenticate().then((token) => {
-      console.log(token)
       return app.passport.verifyJWT(token.accessToken)
-      // .then((value) => {
-      //   console.log(app);
-      //
-      //   this.goToHomePage()
-      // })
     })
     .then(payload => {
-      console.log('JWT Payload', payload);
       return app.service('users').get(payload.userId);
     })
     .then(user => {
       app.set('user', user);
       this.setState({spinnerVisible: false})
       this.goToHomePage();
-      console.log('User', app.get('user'));
     })
-    .catch((err) => {
+    .catch(() => {
       this.setState({spinnerVisible: false})
-      console.log(err);
     })
-  }
-
-  componentDidMount() {
-  //  setTimeout(() => {
-  //    this.setState({
-  //      spinnerVisible: !this.state.spinnerVisible
-  //    });
-  //    console.log(this.state.visible);
-  //    }, 3000);
   }
 
    emailHandler(value){
@@ -132,8 +111,6 @@ export default class first extends Component<{}> {
    }
 
    signIn(){
-    //  email: "user@example.com",
-    //  password: "password"
      this.setState({spinnerVisible: true})
 
      app.authenticate({
@@ -141,36 +118,25 @@ export default class first extends Component<{}> {
        email: this.state.emailInput.value,
        password: this.state.passwordInput.value
      }).then(response => {
-       console.log('Authenticated!', response);
        return app.passport.verifyJWT(response.accessToken);
      })
      .then(payload => {
-       console.log('JWT Payload', payload);
        return app.service('users').get(payload.userId);
      })
      .then(user => {
        app.set('user', user);
        this.setState({spinnerVisible: false})
        this.goToHomePage();
-       console.log('User', app.get('user'));
      })
-     .catch(error => {
+     .catch(() => {
        this.setState({
          spinnerVisible: false,
          badLogin: true
        })
-       console.log('Error authenticating!', error);
      })
    }
 
   render() {
-    // console.log(this.props);
-    // console.log(PushNotification);
-    // PushNotification.localNotificationSchedule({
-    //   message: "My Notification Message", // (required)
-    //   date: new Date(Date.now() + (30 * 1000)) // in 60 secs
-    // });
-    // console.log('notification', new Date(Date.now() + (30 * 1000)));
     return (
       <View style={styles.container}>
       <Spinner
@@ -227,3 +193,7 @@ const styles = StyleSheet.create({
     color: 'rgb(224, 49, 38)'
   }
 });
+
+LoginPage.propTypes = {
+  navigator: PropTypes.object
+}

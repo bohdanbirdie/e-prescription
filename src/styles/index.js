@@ -28,10 +28,12 @@ const coursePageStyles = StyleSheet.create({
 
 const courseCardStyles = StyleSheet.create({
   container: {
-    // flex: 1,
     alignSelf: 'stretch',
     height: 175,
     paddingLeft: 15,
+  },
+  text: {
+    color: '#000000'
   }
 });
 

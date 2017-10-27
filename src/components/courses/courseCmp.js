@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   Text,
   View
@@ -10,7 +11,6 @@ import { courseStyles as styles } from './../../styles'
 export default class Course extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
     const { name, finished, startedAt } = this.props.courseItem;
     const {icon, color} = this.defineStatus(finished, startedAt)
     this.state = {
@@ -48,4 +48,8 @@ export default class Course extends Component {
       </View>
     )
   }
+}
+
+Course.propTypes = {
+  courseItem: PropTypes.object
 }
