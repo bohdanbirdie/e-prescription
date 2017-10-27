@@ -1,21 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  StyleSheet,
-  View
-} from 'react-native';
-import {
-  Input,
-  H3,
-  Button
-} from 'nachos-ui';
-
-import {app} from './../feathers'
+import { View } from 'react-native';
+import { Input, H3, Button } from 'nachos-ui';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-// import PushNotification from 'react-native-push-notification';
-// import PushController from './pushController';
-
+import { app } from './../feathers'
+import { loginPageStyles as styles } from './../styles';
 
 export default class LoginPage extends Component<{}> {
   constructor() {
@@ -180,19 +170,6 @@ export default class LoginPage extends Component<{}> {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    paddingTop: 30
-  },
-  badLogin: {
-    color: 'rgb(224, 49, 38)'
-  }
-});
 
 LoginPage.propTypes = {
   navigator: PropTypes.object

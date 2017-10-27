@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  StyleSheet,
-  View,
-  ListView,
-  TouchableHighlight
-} from 'react-native';
+import { View, ListView, TouchableHighlight } from 'react-native';
 
 import Course from './../components/courses/courseCmp'
 import { app } from './../feathers'
+import { homePageStyles as styles } from './../styles';
 
 export default class HomePage extends Component<{}> {
   constructor(){
@@ -47,23 +43,6 @@ export default class HomePage extends Component<{}> {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
 
 HomePage.propTypes = {
   navigator: PropTypes.object
