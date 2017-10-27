@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native'
-export default config = {
+const config = {
   header: 'Authorization', // the default authorization header for REST
   path: '/authentication', // the server-side authentication service path
   jwtStrategy: 'jwt', // the name of the JWT authentication strategy
@@ -9,3 +9,5 @@ export default config = {
   storageKey: 'feathers-jwt', // the key to store the accessToken in localstorage or AsyncStorage on React Native
   storage: AsyncStorage // Passing a WebStorage-compatible object to enable automatic storage on the client.
 }
+
+export default config;
