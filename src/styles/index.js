@@ -57,6 +57,36 @@ const coursePageStyles = StyleSheet.create({
   }
 });
 
+const addCoursePageStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingLeft: 15,
+  },
+  nameInput: {
+    height: 60,
+    fontSize: 30
+  },
+  durationInput: {
+    height: 40,
+    fontSize: 20
+  }
+});
+
+const addDrugPageStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 15
+  },
+  nameInput: {
+    paddingLeft: 15,
+    height: 35,
+    fontSize: 30,
+    marginTop: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#CCCCCC'
+  },
+});
+
 const courseCardStyles = StyleSheet.create({
   container: {
     alignSelf: 'stretch',
@@ -102,11 +132,15 @@ const listItem = StyleSheet.create({
   }
 });
 
+
+
 export {
   loginPageStyles,
   homePageStyles,
   courseStyles,
   coursePageStyles,
+  addCoursePageStyles,
+  addDrugPageStyles,
   courseCardStyles,
   courseDrugsListStyles,
   listItem
