@@ -27,12 +27,13 @@ export default class ListItem extends Component<{}> {
           style={styles.iconWrapper}
         />
         <Text style={styles.textWrapper}>{this.props.text}</Text>
+        {this.props.enableRightIcon ?
         <Icon
           name={this.props.rightIcon || 'ios-arrow-forward'}
           size={this.props.iconSize}
           color={this.props.rightIconColor || '#C0C0C0'}
           style={styles.iconWrapper}
-        />
+        /> : null}
       </View>
       </TouchableHighlight>
     )
@@ -47,4 +48,5 @@ ListItem.propTypes = {
   text: PropTypes.string,
   rightIcon: PropTypes.string,
   rightIconColor: PropTypes.string,
+  enableRightIcon: PropTypes.bool
 }
