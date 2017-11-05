@@ -85,17 +85,14 @@ export default class CourseCard extends Component {
       <View>
         <Progress progress={this.state.progress} width={this.state.width}/>
         <View style={styles.container}>
-          <H1 style={{
-            color: '#000000'
-          }}>
-            {this.props.courseItem.name.charAt(0).toUpperCase() + this.props.courseItem.name.slice(1)}</H1>
-          <H3 style={{
-            color: '#000000'
-          }}>Duration: {this.props.courseItem.duration}
-            days{this.state.daysLeft}</H3>
-          <H3 style={{
-            color: '#000000'
-          }}>Status: {this.state.definition}
+          <H1 style={{color: '#000000'}}>
+            {this.props.courseItem.name.charAt(0).toUpperCase() + this.props.courseItem.name.slice(1)}
+          </H1>
+          <H3 style={{color: '#000000'}}>
+            Duration: {this.props.courseItem.duration} days{this.state.daysLeft}
+          </H3>
+          <H3 style={{color: '#000000'}}>
+            Status: {this.state.definition}
           </H3>
         </View>
       </View>

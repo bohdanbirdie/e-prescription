@@ -9,7 +9,7 @@ import PushController from './../components/shared/pushController'
 import CourseCard from './../components/courses/courseCard'
 import CourseDrugsList from './../components/courses/courseDrugsList'
 import CourseCalendar from './../components/courses/courseCalendar'
-import {coursePageStyles as styles} from './../styles'
+import {coursePageStyles as styles, theme} from './../styles'
 import {app} from './../feathers'
 
 export default class CoursePage extends Component < {} > {
@@ -35,16 +35,12 @@ export default class CoursePage extends Component < {} > {
         }
       }
     }).then((user) => {
-      console.log(this.state.course._id);
       app.set('user', user[0]);
-      console.log(user);
       user[0].courses.map((course) => {
-        console.log(course._id);
         if (course._id == this.state.course._id) {
           this.setState({course: course, canBeApplied: false})
         }
       })
-
       // this.scheduleNotifications(this.state.course.medicineList)
     }).catch((err) => {
       console.log(err);
@@ -62,7 +58,6 @@ export default class CoursePage extends Component < {} > {
             message: `Time to get a ${list[i].medication}`,
             date: moment(list[i].admissions[j], 'HH:mm:ss').add(x, 'day').toDate()
           });
-          console.log(moment(list[i].admissions[j], 'HH:mm:ss').add(x, 'day').toDate());
         }
       }
     }
@@ -80,9 +75,11 @@ export default class CoursePage extends Component < {} > {
       return (
         <View>
           <CourseDrugsList courseItem={this.state.course}/>
-          <Button onPress={() => this.applyToCourse()} type='success' style={{
-            margin: 15
-          }} kind='squared'>
+          <Button
+            onPress={() => this.applyToCourse()}
+            type='success'
+            style={{margin: 15, backgroundColor: theme.green}}
+            kind='squared'>
             Apply to course
           </Button>
         </View>
@@ -94,7 +91,7 @@ export default class CoursePage extends Component < {} > {
   render() {
     return (
       <ScrollView style={styles.container} scrollEnabled={this.state.canBeApplied}>
-        <CourseCard courseItem={this.state.course} canBeApplied={canBeApplied => this.enableApply(canBeApplied)}/> 
+        <CourseCard courseItem={this.state.course} canBeApplied={canBeApplied => this.enableApply(canBeApplied)}/>
         {this.getCourseBottom()}
         <PushController/>
       </ScrollView>

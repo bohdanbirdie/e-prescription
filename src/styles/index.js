@@ -1,5 +1,13 @@
 import {StyleSheet} from 'react-native';
 
+const theme = {
+  darkBlue: '#203B57',
+  azure: '#7AF8FA',
+  green: '#00C997',
+  yellow: '#FFEEBA',
+  red: '#FF846B'
+}
+
 const loginPageStyles = StyleSheet.create({
   container: {
     flex: 1,
@@ -60,6 +68,8 @@ const coursePageStyles = StyleSheet.create({
 const addCoursePageStyles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  cardContainer: {
     paddingLeft: 15,
   },
   nameInput: {
@@ -162,6 +172,7 @@ const courseCalendarStyle = StyleSheet.create({
 });
 
 export {
+  theme,
   loginPageStyles,
   homePageStyles,
   courseStyles,
