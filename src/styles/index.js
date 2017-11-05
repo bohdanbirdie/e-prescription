@@ -132,7 +132,34 @@ const listItem = StyleSheet.create({
   }
 });
 
-
+const courseCalendarStyle = StyleSheet.create({
+  item: {
+    backgroundColor: 'white',
+    flex: 1,
+    borderRadius: 5,
+    padding: 5,
+    marginRight: 10,
+    marginTop: 17,
+  },
+  admission: {
+    paddingLeft: 5
+  },
+  drugItem: {
+    backgroundColor: '#FFEEBA',
+    borderRadius: 5,
+    margin: 4,
+    padding: 5
+  },
+  drugName: {
+    fontSize: 15,
+    fontWeight: 'bold'
+  },
+  emptyDate: {
+    height: 15,
+    flex:1,
+    paddingTop: 30
+  }
+});
 
 export {
   loginPageStyles,
@@ -143,5 +170,6 @@ export {
   addDrugPageStyles,
   courseCardStyles,
   courseDrugsListStyles,
-  listItem
+  listItem,
+  courseCalendarStyle
 };

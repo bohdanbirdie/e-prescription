@@ -46,7 +46,8 @@ export default class LoginPage extends Component<{}> {
       this.setState({spinnerVisible: false})
       this.goToHomePage();
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
       this.setState({spinnerVisible: false})
     })
   }
@@ -102,7 +103,11 @@ export default class LoginPage extends Component<{}> {
 
    signIn(){
      this.setState({spinnerVisible: true})
-
+     console.log({
+       strategy: 'local',
+       email: this.state.emailInput.value,
+       password: this.state.passwordInput.value
+     });
      app.authenticate({
        strategy: 'local',
        email: this.state.emailInput.value,
@@ -118,7 +123,8 @@ export default class LoginPage extends Component<{}> {
        this.setState({spinnerVisible: false})
        this.goToHomePage();
      })
-     .catch(() => {
+     .catch((err) => {
+       console.log(err);
        this.setState({
          spinnerVisible: false,
          badLogin: true
@@ -165,7 +171,6 @@ export default class LoginPage extends Component<{}> {
         >
           Sign In
         </Button>
-        {/* <PushController /> */}
       </View>
     );
   }

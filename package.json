@@ -17,6 +17,7 @@
     "prop-types": "^15.6.0",
     "react": "16.0.0-beta.5",
     "react-native": "0.49.3",
+    "react-native-calendars": "^1.9.1",
     "react-native-collapsible": "^0.9.0",
     "react-native-datepicker": "^1.6.0",
     "react-native-loading-spinner-overlay": "^0.5.2",

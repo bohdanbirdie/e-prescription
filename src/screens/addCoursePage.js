@@ -26,7 +26,7 @@ export default class AddCourse extends Component<{}> {
       iconSize={30}
       leftIconColor="#0000CC"
       text={drug.drugName.charAt(0).toUpperCase() + drug.drugName.slice(1)}
-      onPress={()=>console.log(drug)}
+      onPress={()=>null}
       key={drug.drugName}
     />);
     this.setState({drugs, plainDrugsList})
@@ -45,7 +45,8 @@ export default class AddCourse extends Component<{}> {
           "name" : this.state.courseName,
           "duration" : this.state.courseDuration,
           "startedAt" : "null",
-          "medicineList" : this.generateMedList(this.state.plainDrugsList)
+          "medicineList" : this.generateMedList(this.state.plainDrugsList),
+          "_id": ''
       } }
     }).then(() => {
       this.props.navigator.pop({
@@ -62,7 +63,8 @@ export default class AddCourse extends Component<{}> {
           "doctorComment" : '',
           "admissions" : medication.admissions,
           "fromDay" : 0,
-          "duration" : 3
+          "duration" : 3,
+          "_id": ''
         }
       }
     )
