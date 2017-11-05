@@ -5,7 +5,7 @@ import DatePicker from 'react-native-datepicker';
 import { Button } from 'nachos-ui';
 
 import ListItem from './../components/shared/listItem'
-import { addDrugPageStyles as styles } from './../styles';
+import { addDrugPageStyles as styles, theme } from './../styles';
 
 export default class AddDrug extends Component<{}> {
   static navigatorButtons = {
@@ -23,7 +23,8 @@ export default class AddDrug extends Component<{}> {
     super(props);
     this.state = {
       admissions: [],
-      drugName: ''
+      drugName: '',
+      allowToSave: false
     }
     this.admissionsAmount = 0;
 
@@ -63,7 +64,7 @@ export default class AddDrug extends Component<{}> {
           date={time}
           mode="time"
           placeholder="Select time"
-          format="HH-mm-ss"
+          format="HH:mm:ss"
           showIcon={false}
           is24Hour={true}
           confirmBtnText="Confirm"
@@ -93,16 +94,20 @@ export default class AddDrug extends Component<{}> {
           onDateChange={(date) => {
             const admissions = this.state.admissions;
             admissions[index] = date
-            this.setState({admissions});
+            this.setState({admissions, allowToSave: true});
         }}
       />)
     )
   }
 
   saveDrug(){
-    if (this.state.admissions.length > 0 && this.state.drugName.length > 0) {
+    if (this.state.admissions.length > 0 && this.state.drugName.length > 0 && this.state.allowToSave) {
       return(
-        <Button kind='squared' type='success' onPress={()=>this.saveAndGoBack()}>
+        <Button
+          kind='squared'
+          type='success'
+          onPress={()=>this.saveAndGoBack()}
+          style={{marginTop: 20, backgroundColor: theme.green}}>
           Save
         </Button>)
     }

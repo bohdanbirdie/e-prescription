@@ -77,13 +77,13 @@ export default class CourseDrugsList extends Component {
             borderRightWidth: 0,
             borderBottomWidth: 0,
             borderTopWidth: 0,
-            backgroundColor: '#99CC33',
+            borderLeftWidth: 0,
             alignItems: 'flex-start',
             alignSelf: 'stretch',
+            paddingLeft: 20,
           },
           dateText: {
             borderRadius: 0,
-            color: '#FF0000'
           }
         }}
         onDateChange={(date) => console.log(date)}

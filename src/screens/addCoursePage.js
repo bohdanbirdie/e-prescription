@@ -5,7 +5,7 @@ import { H1, Button } from 'nachos-ui';
 
 import ListItem from './../components/shared/listItem'
 import { app } from './../feathers'
-import { addCoursePageStyles as styles } from './../styles';
+import { addCoursePageStyles as styles, theme } from './../styles';
 
 export default class AddCourse extends Component<{}> {
   constructor(){
@@ -74,39 +74,40 @@ export default class AddCourse extends Component<{}> {
   render() {
     return (
       <View style={styles.container}>
-        <TextInput
-          placeholder="Course name"
-          autoCorrect={false}
-          style={styles.nameInput}
-          onChangeText={(courseName)=>this.setState({courseName})}/>
-        <TextInput
-          placeholder="Duration"
-          keyboardType='decimal-pad'
-          style={styles.durationInput}
-          onChangeText={(courseDuration)=>this.setState({courseDuration})}/>
-        <H1 style={{color: '#000000'}}>Drugs</H1>
-
-        {this.state.drugs}
-        <ListItem
-          leftIcon="ios-add-circle-outline"
-          iconSize={30}
-          leftIconColor="#0000CC"
-          text='Add drug'
-          onPress={()=>this.props.navigator.showModal({
-            screen: "epres.addDrugPage", // unique ID registered with Navigation.registerScreen
-            title: "Modal", // title of the screen as appears in the nav bar (optional)
-            passProps: {applySavedDrug: this.applySavedDrug.bind(this) }, // simple serializable object that will pass as props to the modal (optional)
-            navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
-            animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
-          })}/>
-
-          <Button
-            kind='squared'
-            type='success'
-            disabled={this.isFormValid()}
-            onPress={()=>this.saveCourse()}>
-            Save Course
-          </Button>
+        <View style={styles.cardContainer}>
+          <TextInput
+            placeholder="Course name"
+            autoCorrect={false}
+            style={styles.nameInput}
+            onChangeText={(courseName)=>this.setState({courseName})}/>
+          <TextInput
+            placeholder="Duration"
+            keyboardType='decimal-pad'
+            style={styles.durationInput}
+            onChangeText={(courseDuration)=>this.setState({courseDuration})}/>
+          <H1 style={{color: '#000000'}}>Drugs</H1>
+          {this.state.drugs}
+          <ListItem
+            leftIcon="ios-add-circle-outline"
+            iconSize={30}
+            leftIconColor="#0000CC"
+            text='Add drug'
+            onPress={()=>this.props.navigator.showModal({
+              screen: "epres.addDrugPage", // unique ID registered with Navigation.registerScreen
+              title: "Modal", // title of the screen as appears in the nav bar (optional)
+              passProps: {applySavedDrug: this.applySavedDrug.bind(this) }, // simple serializable object that will pass as props to the modal (optional)
+              navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
+              animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+            })}/>
+        </View>
+        <Button
+          kind='squared'
+          type='success'
+          style={{marginTop: 20, backgroundColor: theme.green}}
+          disabled={this.isFormValid()}
+          onPress={()=>this.saveCourse()}>
+          Save Course
+        </Button>
       </View>
     );
   }

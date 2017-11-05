@@ -1,0 +1,27 @@
+{
+    "_id" : ObjectId("59f056092f4c349081fdc652"),
+    "email" : "user@example.com",
+    "password" : "$2a$12$kWML0SHPXQG6hBO7DRBaK.fLEpfgDA1GLkS3M3C8cHtuO/lXBld1.",
+    "courses" : [
+        {
+            "finished" : false,
+            "name" : "test",
+            "duration" : "3",
+            "startedAt" : "null",
+            "medicineList" : [
+                {
+                    "medication" : "One",
+                    "instructions" : "",
+                    "doctorComment" : "",
+                    "admissions" : [
+                        "23-04-10"
+                    ],
+                    "fromDay" : 0,
+                    "duration" : 3,
+                    "_id" : ObjectId("59fb884d706cc26392e4e285")
+                }
+            ],
+            "_id" : ObjectId("59fb884d706cc26392e4e286")
+        }
+    ]
+}
