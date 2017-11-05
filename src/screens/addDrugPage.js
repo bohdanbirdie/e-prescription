@@ -8,6 +8,17 @@ import ListItem from './../components/shared/listItem'
 import { addDrugPageStyles as styles } from './../styles';
 
 export default class AddDrug extends Component<{}> {
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        title: 'Cancel', // for a textual button, provide the button title (label)
+        id: 'cancelDrug', // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
+        buttonFontSize: 14, // Set font size for the button (can also be used in setButtons function to set different button style programatically)
+        buttonFontWeight: '400', // Set font weight for the button (can also be used in setButtons function to set different button style programatically)
+      }
+    ]
+  }
+
   constructor(props){
     super(props);
     this.state = {
@@ -15,6 +26,20 @@ export default class AddDrug extends Component<{}> {
       drugName: ''
     }
     this.admissionsAmount = 0;
+
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
+  onNavigatorEvent(event) {
+    switch (event.id) {
+      case 'cancelDrug':
+        this.props.navigator.dismissModal({
+          animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+        });
+        break;
+      default:
+
+    }
   }
 
   saveAndGoBack(){
