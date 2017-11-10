@@ -51,6 +51,11 @@ export default class LoginPage extends Component<{}> {
       })
       .catch((err) => {
         console.log(err);
+        try {
+          app.logout()
+        } catch (e) {
+
+        }
         this.setState({spinnerVisible: false})
       })
     }

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
+    "build:ios": "node node_modules/react-native/local-cli/cli.js bundle --entry-file='index.ios.js' --bundle-output='./ios/ePrescription/main.jsbundle' --dev=true --platform='ios' --assets-dest='./ios'",
     "test": "jest"
   },
   "dependencies": {
