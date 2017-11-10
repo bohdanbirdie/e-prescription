@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { View, Keyboard } from 'react-native';
 import { Input, H3, Button } from 'nachos-ui';
 import Spinner from 'react-native-loading-spinner-overlay';
 
@@ -36,8 +36,8 @@ export default class LoginPage extends Component<{}> {
   }
 
   componentWillMount() {
+    console.log(this.state.spinnerVisible);
     if (!this.props.loggedOut) {
-      console.log('authenticate', this.state.spinnerVisible);
       app.authenticate().then((token) => {
         return app.passport.verifyJWT(token.accessToken)
       })
@@ -46,7 +46,7 @@ export default class LoginPage extends Component<{}> {
       })
       .then(user => {
         app.set('user', user);
-        // this.setState({spinnerVisible: false})
+        this.setState({spinnerVisible: true})
         this.goToHomePage();
       })
       .catch((err) => {
@@ -54,13 +54,13 @@ export default class LoginPage extends Component<{}> {
         try {
           app.logout()
         } catch (e) {
-
+          null
         }
         this.setState({spinnerVisible: false})
       })
+    } else {
+      this.setState({spinnerVisible: false})
     }
-    this.setState({spinnerVisible: false})
-
   }
 
    emailHandler(value){
@@ -113,12 +113,8 @@ export default class LoginPage extends Component<{}> {
    }
 
    signIn(){
+     Keyboard.dismiss();
      this.setState({spinnerVisible: true})
-     console.log({
-       strategy: 'local',
-       email: this.state.emailInput.value,
-       password: this.state.passwordInput.value
-     });
      app.authenticate({
        strategy: 'local',
        email: this.state.emailInput.value,
@@ -188,5 +184,6 @@ export default class LoginPage extends Component<{}> {
 }
 
 LoginPage.propTypes = {
-  navigator: PropTypes.object
+  navigator: PropTypes.object,
+  loggedOut: PropTypes.bool
 }
