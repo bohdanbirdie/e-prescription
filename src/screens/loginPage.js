@@ -46,7 +46,7 @@ export default class LoginPage extends Component<{}> {
   }
 
   componentWillMount() {
-    if (this.props.loggedOut) {
+    if (!this.props.loggedOut) {
       app.authenticate().then((token) => {
         return app.passport.verifyJWT(token.accessToken)
       })
@@ -60,9 +60,9 @@ export default class LoginPage extends Component<{}> {
       })
       .catch((err) => {
         console.log(err);
-        // app.logout().catch((err) => {
-        //   console.log(err);
-        // })
+        app.logout().catch((err) => {
+          console.log(err);
+        })
         this.setState({spinnerVisible: false})
       })
     } else {
