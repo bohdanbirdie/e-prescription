@@ -16,6 +16,14 @@ export default class HomePage extends Component < {} > {
         buttonFontSize: 14, // Set font size for the button (can also be used in setButtons function to set different button style programatically)
         buttonFontWeight: '400', // Set font weight for the button (can also be used in setButtons function to set different button style programatically)
       }
+    ],
+    leftButtons: [
+      {
+        title: 'Settings', // for a textual button, provide the button title (label)
+        id: 'settings', // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
+        buttonFontSize: 14, // Set font size for the button (can also be used in setButtons function to set different button style programatically)
+        buttonFontWeight: '400', // Set font weight for the button (can also be used in setButtons function to set different button style programatically)
+      }
     ]
   }
 
@@ -70,6 +78,13 @@ export default class HomePage extends Component < {} > {
         this.props.navigator.push({
           screen: 'epres.addCoursePage', // unique ID registered with Navigation.registerScreen
           title: 'Add course', // navigation bar title of the pushed screen (optional)
+          animated: true, // does the push have transition animation or does it happen immediately (optional)
+        });
+        break;
+      case 'settings':
+        this.props.navigator.push({
+          screen: 'epres.settingsPage', // unique ID registered with Navigation.registerScreen
+          title: 'Settings', // navigation bar title of the pushed screen (optional)
           animated: true, // does the push have transition animation or does it happen immediately (optional)
         });
         break;

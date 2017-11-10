@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Text, View} from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import {courseStyles as styles} from './../../styles'
+import {courseStyles as styles, theme} from './../../styles'
 
 export default class Course extends Component {
   constructor(props) {
@@ -29,12 +29,12 @@ export default class Course extends Component {
 
   defineStatus(finished, startedAt) {
     if (finished) {
-      return {icon: 'ios-checkbox-outline', color: '#00CC00'}
+      return {icon: 'ios-checkbox-outline', color: theme.green}
     } else {
       if (startedAt == 'null') {
-        return {icon: 'ios-close', color: '#CCCCCC'}
+        return {icon: 'ios-close', color: theme.gray}
       }
-      return {icon: 'ios-walk', color: '#0000CC'}
+      return {icon: 'ios-walk', color: theme.blue}
     }
   }
 

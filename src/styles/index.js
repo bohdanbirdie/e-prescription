@@ -1,11 +1,12 @@
 import {StyleSheet} from 'react-native';
 
 const theme = {
-  darkBlue: '#203B57',
-  azure: '#7AF8FA',
-  green: '#00C997',
-  yellow: '#FFEEBA',
-  red: '#FF846B'
+  blue: '#368FFB',
+  gray: '#CCCCCC',
+  brightGray: '#EEEEEE',
+  green: '#8CD8BA',
+  yellow: '#FFE74C',
+  red: '#FF5964'
 }
 
 const loginPageStyles = StyleSheet.create({
@@ -155,8 +156,8 @@ const courseCalendarStyle = StyleSheet.create({
     paddingLeft: 5
   },
   drugItem: {
-    backgroundColor: '#FFEEBA',
-    borderRadius: 5,
+    // backgroundColor: theme.brightGray,
+    // borderRadius: 5,
     margin: 4,
     padding: 5
   },
