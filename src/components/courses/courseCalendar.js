@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, Text, Dimensions } from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 import moment from 'moment';
 
-import { courseCalendarStyle as styles } from './../../styles'
+import { courseCalendarStyle as styles, theme } from './../../styles'
 
 export default class CourseCalendar extends Component {
   constructor(props) {
@@ -27,8 +27,8 @@ export default class CourseCalendar extends Component {
     }
 
     this.markingStyles = {
-      color: '#00C997',
-      textColor: '#203B57'
+      color: theme.blue,
+      textColor: 'white'
     }
   }
 
@@ -65,11 +65,6 @@ export default class CourseCalendar extends Component {
     if (this.state.status.definition === 'in progress') {
       days.map((day) => {
         items[day] = [this.state.medicineList];
-        // this.state.medicineList.map((item) => {
-        //   items[day].push({
-        //     text: item.medication
-        //   })
-        // })
       })
     }
 
@@ -85,7 +80,7 @@ export default class CourseCalendar extends Component {
     if (this.state.status.definition === 'in progress') {
       days.map((day) => {
         items[day] = [{
-          color: '#FFEEBA', textColor: 'black'
+          color: theme.gray, textColor: 'white'
         }];
       })
       //Init range borders and selected day//
@@ -138,8 +133,9 @@ export default class CourseCalendar extends Component {
           rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
           markedDates={this.state.markedDates}
           markingType={'interactive'}
-          style={{height: (this.height-245)}}
-          theme={{height: 400, paddingBottom: 10, borderBottomColor: 'red', borderBottomWidth: 10}}
+          style={{
+            height: (this.height-65)
+          }}
         />
       </View>
     )

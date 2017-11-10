@@ -24,6 +24,7 @@ export default class LoginPage extends Component<{}> {
         valid: false
       },
     };
+
   }
 
   goToHomePage(){
@@ -35,21 +36,31 @@ export default class LoginPage extends Component<{}> {
   }
 
   componentWillMount() {
-    app.authenticate().then((token) => {
-      return app.passport.verifyJWT(token.accessToken)
-    })
-    .then(payload => {
-      return app.service('users').get(payload.userId);
-    })
-    .then(user => {
-      app.set('user', user);
-      this.setState({spinnerVisible: false})
-      this.goToHomePage();
-    })
-    .catch((err) => {
-      console.log(err);
-      this.setState({spinnerVisible: false})
-    })
+    if (!this.props.loggedOut) {
+      console.log('authenticate', this.state.spinnerVisible);
+      app.authenticate().then((token) => {
+        return app.passport.verifyJWT(token.accessToken)
+      })
+      .then(payload => {
+        return app.service('users').get(payload.userId);
+      })
+      .then(user => {
+        app.set('user', user);
+        // this.setState({spinnerVisible: false})
+        this.goToHomePage();
+      })
+      .catch((err) => {
+        console.log(err);
+        try {
+          app.logout()
+        } catch (e) {
+
+        }
+        this.setState({spinnerVisible: false})
+      })
+    }
+    this.setState({spinnerVisible: false})
+
   }
 
    emailHandler(value){

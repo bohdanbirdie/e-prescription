@@ -28,6 +28,8 @@
 		1BFDAA68C76B478E9327678A /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D1059E962A56447A9EDD020E /* Entypo.ttf */; };
 		2339BEF309DD478DA1D0DC4C /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 97D4D10A82284BE2971C9910 /* Feather.ttf */; };
 		23EB740984B84DD1835532FA /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A32FD39CD8BC4D398CA2DDD8 /* Ionicons.ttf */; };
+		2A1CE6681FB5C99200B4678F /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 2A1CE6671FB5C99200B4678F /* main.jsbundle */; };
+		2A1CE66A1FB5CA1600B4678F /* Info-release.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2A1CE6691FB5CA1600B4678F /* Info-release.plist */; };
 		2A5694011F97EF7D0060A65B /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A5693F01F97EF530060A65B /* libRCTPushNotification.a */; };
 		2AE58A2F1F9F399900D06378 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AE58A2E1F9F396E00D06378 /* libReactNativeNavigation.a */; };
 		461CE56466064B8096320827 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF63938560D048B3BE0D0375 /* Octicons.ttf */; };
@@ -104,6 +106,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
+		};
+		2A1CE64A1FB5BEC400B4678F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9936F3131F5F2E4B0010BF04;
+			remoteInfo = privatedata;
+		};
+		2A1CE64C1FB5BEC400B4678F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9936F32F1F5F2E5B0010BF04;
+			remoteInfo = "privatedata-tvOS";
 		};
 		2A1F55E61F9FE16600614D76 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -332,6 +348,8 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ePrescription/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		1CA3D48C2D5B49A5BEA4F28C /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		2A1CE6671FB5C99200B4678F /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.jsbundle; path = ePrescription/main.jsbundle; sourceTree = "<group>"; };
+		2A1CE6691FB5CA1600B4678F /* Info-release.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-release.plist"; path = "ePrescription/Info-release.plist"; sourceTree = "<group>"; };
 		2A5693DC1F97EF520060A65B /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		2AE58A061F9F396E00D06378 /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
@@ -469,10 +487,12 @@
 			isa = PBXGroup;
 			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
+				2A1CE6671FB5C99200B4678F /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
+				2A1CE6691FB5CA1600B4678F /* Info-release.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
@@ -494,6 +514,8 @@
 				2AF53E401F9E728600F43EF7 /* libthird-party.a */,
 				2AF53E421F9E728600F43EF7 /* libdouble-conversion.a */,
 				2AF53E441F9E728600F43EF7 /* libdouble-conversion.a */,
+				2A1CE64B1FB5BEC400B4678F /* libprivatedata.a */,
+				2A1CE64D1FB5BEC400B4678F /* libprivatedata-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -841,6 +863,20 @@
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		2A1CE64B1FB5BEC400B4678F /* libprivatedata.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libprivatedata.a;
+			remoteRef = 2A1CE64A1FB5BEC400B4678F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2A1CE64D1FB5BEC400B4678F /* libprivatedata-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libprivatedata-tvOS.a";
+			remoteRef = 2A1CE64C1FB5BEC400B4678F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		2A1F55E71F9FE16600614D76 /* libRNVectorIcons.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1063,12 +1099,14 @@
 				1BFDAA68C76B478E9327678A /* Entypo.ttf in Resources */,
 				99005950DD4D4858861C0A76 /* EvilIcons.ttf in Resources */,
 				2339BEF309DD478DA1D0DC4C /* Feather.ttf in Resources */,
+				2A1CE6681FB5C99200B4678F /* main.jsbundle in Resources */,
 				EAE8F2653E3F4A45ACD90749 /* FontAwesome.ttf in Resources */,
 				00EE18B163004D2E81258E54 /* Foundation.ttf in Resources */,
 				23EB740984B84DD1835532FA /* Ionicons.ttf in Resources */,
 				022002852AA24933A885C2CF /* MaterialCommunityIcons.ttf in Resources */,
 				0D42D845F7E74139AD30F788 /* MaterialIcons.ttf in Resources */,
 				461CE56466064B8096320827 /* Octicons.ttf in Resources */,
+				2A1CE66A1FB5CA1600B4678F /* Info-release.plist in Resources */,
 				73BDFDB498D243AC978B6658 /* SimpleLineIcons.ttf in Resources */,
 				990DAEBF2AE74246AABC2F6F /* Zocial.ttf in Resources */,
 			);
@@ -1231,7 +1269,7 @@
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 				);
-				INFOPLIST_FILE = ePrescription/Info.plist;
+				INFOPLIST_FILE = "ePrescription/Info-release.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (

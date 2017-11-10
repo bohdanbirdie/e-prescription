@@ -15,9 +15,22 @@ import {app} from './../feathers'
 export default class CoursePage extends Component < {} > {
   constructor(props) {
     super(props);
+    const {finished, startedAt} = this.props.course;
+    const {canBeApplied} = this.defineStatus(finished, startedAt)
     this.state = {
       course: this.props.course,
-      canBeApplied: false
+      canBeApplied,
+    }
+  }
+
+  defineStatus(finished, startedAt) {
+    if (finished) {
+      return {canBeApplied: false}
+    } else {
+      if (startedAt == 'null') {
+        return {canBeApplied: true}
+      }
+      return {canBeApplied: false}
     }
   }
 
@@ -74,6 +87,7 @@ export default class CoursePage extends Component < {} > {
     if (this.state.canBeApplied) {
       return (
         <View>
+          <CourseCard courseItem={this.state.course} canBeApplied={canBeApplied => this.enableApply(canBeApplied)}/>
           <CourseDrugsList courseItem={this.state.course}/>
           <Button
             onPress={() => this.applyToCourse()}
@@ -91,7 +105,6 @@ export default class CoursePage extends Component < {} > {
   render() {
     return (
       <ScrollView style={styles.container} scrollEnabled={this.state.canBeApplied}>
-        <CourseCard courseItem={this.state.course} canBeApplied={canBeApplied => this.enableApply(canBeApplied)}/>
         {this.getCourseBottom()}
         <PushController/>
       </ScrollView>
