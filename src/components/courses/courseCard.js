@@ -83,7 +83,6 @@ export default class CourseCard extends Component {
   render() {
     return (
       <View>
-        <Progress progress={this.state.progress} width={this.state.width}/>
         <View style={styles.container}>
           <H1 style={{color: '#000000'}}>
             {this.props.courseItem.name.charAt(0).toUpperCase() + this.props.courseItem.name.slice(1)}
