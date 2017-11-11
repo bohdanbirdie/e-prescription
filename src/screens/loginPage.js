@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Keyboard } from 'react-native';
+import { View, Keyboard, ActivityIndicator } from 'react-native';
 import { Input, H3, Button } from 'nachos-ui';
 import Spinner from 'react-native-loading-spinner-overlay';
 
+
 import { app } from './../feathers'
-import { loginPageStyles as styles } from './../styles';
+import { loginPageStyles as styles, theme } from './../styles';
 
 export default class LoginPage extends Component<{}> {
   constructor() {
     super();
     this.state = {
       spinnerVisible: true,
+      buttonSpinnerVisible: false,
       badLogin: false,
       emailInput: {
         status: 'normal',
@@ -35,8 +37,15 @@ export default class LoginPage extends Component<{}> {
     });
   }
 
+  goToQRPage(){
+    this.props.navigator.push({
+      screen: 'epres.QRReaderPage',
+      title: 'QR',
+      animated: true,
+    });
+  }
+
   componentWillMount() {
-    console.log(this.state.spinnerVisible);
     if (!this.props.loggedOut) {
       app.authenticate().then((token) => {
         return app.passport.verifyJWT(token.accessToken)
@@ -51,11 +60,9 @@ export default class LoginPage extends Component<{}> {
       })
       .catch((err) => {
         console.log(err);
-        try {
-          app.logout()
-        } catch (e) {
-          null
-        }
+        app.logout().catch((err) => {
+          console.log(err);
+        })
         this.setState({spinnerVisible: false})
       })
     } else {
@@ -114,7 +121,7 @@ export default class LoginPage extends Component<{}> {
 
    signIn(){
      Keyboard.dismiss();
-     this.setState({spinnerVisible: true})
+     this.setState({buttonSpinnerVisible: true})
      app.authenticate({
        strategy: 'local',
        email: this.state.emailInput.value,
@@ -127,13 +134,13 @@ export default class LoginPage extends Component<{}> {
      })
      .then(user => {
        app.set('user', user);
-       this.setState({spinnerVisible: false})
+       this.setState({buttonSpinnerVisible: false})
        this.goToHomePage();
      })
      .catch((err) => {
        console.log(err);
        this.setState({
-         spinnerVisible: false,
+         buttonSpinnerVisible: false,
          badLogin: true
        })
      })
@@ -169,14 +176,32 @@ export default class LoginPage extends Component<{}> {
           returnKeyType="done"
         />
         {this.state.badLogin ? <H3 style={styles.badLogin}>Bad login</H3> : null}
+        <View style={styles.signIn}>
+          {this.state.buttonSpinnerVisible ?
+            <ActivityIndicator
+               animating={true}
+               color={theme.green}
+               size="large"
+               style={{marginTop: 20}}/>:
+             <Button
+               onPress={() => this.signIn()}
+               type='success'
+               style={{margin: 15, width: 300}}
+               kind='squared'
+               disabled={!(this.state.passwordInput.valid && this.state.emailInput.valid)}
+             >
+               Sign In
+             </Button>
+          }
+        </View>
+        <H3>OR</H3>
         <Button
-          onPress={() => this.signIn()}
-          type='success'
-          style={{margin: 15}}
+          onPress={() => this.goToQRPage()}
+          type='primary'
+          style={{marginTop: 20, width: 300}}
           kind='squared'
-          disabled={!(this.state.passwordInput.valid && this.state.emailInput.valid)}
         >
-          Sign In
+          Sign Up
         </Button>
       </View>
     );

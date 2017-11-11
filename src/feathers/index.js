@@ -6,7 +6,9 @@ import hooks from 'feathers-hooks';
 import auth from 'feathers-authentication-client';
 import authConfig from './authConfig'
 
-const socket = io('http://localhost:3030', {
+const socket = io('https://e-prescription.herokuapp.com', {
+// const socket = io('http://192.168.1.6:3030', {
+// const socket = io('localhost:3030', {
   transports: ['websocket'],
   forceNew: true
 });

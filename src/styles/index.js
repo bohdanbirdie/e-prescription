@@ -18,7 +18,14 @@ const loginPageStyles = StyleSheet.create({
     paddingTop: 30
   },
   badLogin: {
-    color: 'rgb(224, 49, 38)'
+    color: theme.red
+  },
+  signIn: {
+    height: 60,
+    margin: 20
+  },
+  buttons: {
+    width: 100
   }
 });
 
