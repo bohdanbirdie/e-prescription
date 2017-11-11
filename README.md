@@ -31,6 +31,15 @@ Medication scheduler build on `React Native`
 
 Open ePrescription.xcodeproj from `ios` folder, select debug or release schema (Product -> Schema) and run app build.
 
+### Roadmap
+- [X] Add registration via QR code
+- [ ] Cleanup all styles
+- [ ] Animate course application
+- [ ] Lock scroll on `medicine list` page when user is swiping course item
+- [ ] Write tests
+- [ ] Add ability to modify submission hours for drugs
+- [ ] Fix submission list date formar from `HH-MM-ss` to `HH:MM:ss`
+
 ### Tests
 
 Under development
