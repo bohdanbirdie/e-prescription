@@ -40,6 +40,12 @@ Under development
 Go to project folder, then run `$ npm run build:ios`, this will create new `main.jsbundle` for your app.
 Open ePrescription.xcodeproj from `ios` folder, select release schema and connected device, run app build.
 
+## Screenshots
+
+![image](https://user-images.githubusercontent.com/23266928/32684856-2bd4e16e-c691-11e7-81aa-1fa99583072c.png)
+![image](https://user-images.githubusercontent.com/23266928/32684857-2e9356f6-c691-11e7-8b69-9208afd04497.png)
+
+
 ## Built With
 
 * [React Native](https://facebook.github.io/react-native/)
