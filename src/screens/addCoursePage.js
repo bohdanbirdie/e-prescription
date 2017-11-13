@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, TextInput } from 'react-native';
 import { H1, Button } from 'nachos-ui';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { BlurView } from 'react-native-blur';
 
 import ListItem from './../components/shared/listItem'
 import { app } from './../feathers'
@@ -14,7 +16,8 @@ export default class AddCourse extends Component<{}> {
       courseName: '',
       courseDuration: 0,
       drugs: [],
-      plainDrugsList: []
+      plainDrugsList: [],
+      spinner: false
     }
   }
 
@@ -39,6 +42,7 @@ export default class AddCourse extends Component<{}> {
   }
 
   saveCourse(){
+    this.setState({spinner: true});
     app.service('users').update(app.get('user')._id, {
       $push: { courses: {
           "finished" : false,
@@ -49,10 +53,13 @@ export default class AddCourse extends Component<{}> {
           "_id": ''
       } }
     }).then(() => {
+      this.setState({spinner: false});
       this.props.navigator.pop({
         animated: true, // does the pop have transition animation or does it happen immediately (optional)
       });
-    });
+    }).catch((err) => {
+      this.setState({spinner: false});
+    })
   }
 
   generateMedList(list){
@@ -74,6 +81,14 @@ export default class AddCourse extends Component<{}> {
   render() {
     return (
       <View style={styles.container}>
+        <Spinner visible={this.state.spinner}>
+           <BlurView
+             style={{flex: 1}}
+             viewRef={this.state.viewRef}
+             blurType="light"
+             blurAmount={10}
+           />
+         </Spinner>
         <View style={styles.cardContainer}>
           <TextInput
             placeholder="Course name"

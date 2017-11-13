@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "build:ios": "node node_modules/react-native/local-cli/cli.js bundle --entry-file='index.ios.js' --bundle-output='./ios/ePrescription/main.jsbundle' --dev=true --platform='ios' --assets-dest='./ios'",
-    "icons" : "yo rn-toolbox:assets --icon ./Icon.png",
+    "icons": "yo rn-toolbox:assets --icon ./Icon.png",
     "test": "jest"
   },
   "dependencies": {
@@ -19,6 +19,7 @@
     "prop-types": "^15.6.0",
     "react": "16.0.0",
     "react-native": "0.50.0",
+    "react-native-blur": "^3.2.2",
     "react-native-calendars": "^1.9.1",
     "react-native-camera": "^0.12.0",
     "react-native-collapsible": "^0.9.0",
