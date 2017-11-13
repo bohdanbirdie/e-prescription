@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {View} from 'react-native';
 import {Button} from 'nachos-ui';
+import PushNotification from 'react-native-push-notification';
 
-import {theme} from './../styles'
+import {settingsPageStyle as styles, theme} from './../styles'
 import {app} from './../feathers'
 
 export default class SettingsPage extends Component < {} > {
@@ -22,13 +23,20 @@ export default class SettingsPage extends Component < {} > {
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <Button
           onPress={() => this.signOut()}
           type='danger'
-          style={{margin: 15, backgroundColor: theme.red}}
+          style={{marginTop: 15, backgroundColor: theme.blue}}
           kind='squared'>
           Logout
+        </Button>
+        <Button
+          onPress={() => PushNotification.cancelAllLocalNotifications()}
+          type='danger'
+          style={{backgroundColor: theme.red}}
+          kind='squared'>
+          Cancel all notifications
         </Button>
       </View>
     )

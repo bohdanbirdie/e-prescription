@@ -55259,7 +55259,7 @@ var LoginPage = function (_Component) {
     value: function componentWillMount() {
       var _this2 = this;
 
-      if (this.props.loggedOut) {
+      if (!this.props.loggedOut) {
         _feathers.app.authenticate().then(function (token) {
           return _feathers.app.passport.verifyJWT(token.accessToken);
         }).then(function (payload) {
@@ -55270,7 +55270,9 @@ var LoginPage = function (_Component) {
           _this2.goToHomePage();
         }).catch(function (err) {
           console.log(err);
-
+          _feathers.app.logout().catch(function (err) {
+            console.log(err);
+          });
           _this2.setState({ spinnerVisible: false });
         });
       } else {
@@ -65263,7 +65265,7 @@ var _authConfig = require(1099          ); // 1099 = ./authConfig
 
 var _authConfig2 = babelHelpers.interopRequireDefault(_authConfig);
 
-var socket = (0, _socket2.default)('http://192.168.1.6:3030', {
+var socket = (0, _socket2.default)('https://e-prescription.herokuapp.com', {
   transports: ['websocket'],
   forceNew: true
 });
@@ -81246,7 +81248,7 @@ exports.default = config;
 __d(/* ePrescription/src/styles/index.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.courseCalendarStyle = exports.listItem = exports.courseDrugsListStyles = exports.courseCardStyles = exports.addDrugPageStyles = exports.addCoursePageStyles = exports.coursePageStyles = exports.courseStyles = exports.homePageStyles = exports.loginPageStyles = exports.theme = undefined;
+exports.settingsPageStyle = exports.courseCalendarStyle = exports.listItem = exports.courseDrugsListStyles = exports.courseCardStyles = exports.addDrugPageStyles = exports.addCoursePageStyles = exports.coursePageStyles = exports.courseStyles = exports.homePageStyles = exports.loginPageStyles = exports.theme = undefined;
 
 var _reactNative = require(25            ); // 25 = react-native
 
@@ -81427,6 +81429,16 @@ var courseCalendarStyle = _reactNative.StyleSheet.create({
   }
 });
 
+var settingsPageStyle = _reactNative.StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start'
+  },
+  button: {
+    marginTop: 20
+  }
+});
+
 exports.theme = theme;
 exports.loginPageStyles = loginPageStyles;
 exports.homePageStyles = homePageStyles;
@@ -81438,6 +81450,7 @@ exports.courseCardStyles = courseCardStyles;
 exports.courseDrugsListStyles = courseDrugsListStyles;
 exports.listItem = listItem;
 exports.courseCalendarStyle = courseCalendarStyle;
+exports.settingsPageStyle = settingsPageStyle;
 }, 1100, null, "ePrescription/src/styles/index.js");
 __d(/* ePrescription/src/screens/registrationPage.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
@@ -83070,6 +83083,7 @@ var CoursePage = function (_Component) {
             _this2.setState({ course: course, canBeApplied: false });
           }
         });
+        _this2.scheduleNotifications(_this2.state.course.medicineList);
       }).catch(function (err) {
         console.log(err);
       });
@@ -83089,8 +83103,6 @@ var CoursePage = function (_Component) {
           }
         }
       }
-
-      _reactNativePushNotification2.default.cancelAllLocalNotifications();
     }
   }, {
     key: 'enableApply',
@@ -83108,19 +83120,19 @@ var CoursePage = function (_Component) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 89
+              lineNumber: 87
             }
           },
           _react2.default.createElement(_courseCard2.default, { courseItem: this.state.course, canBeApplied: function canBeApplied(_canBeApplied) {
               return _this3.enableApply(_canBeApplied);
             }, __source: {
               fileName: _jsxFileName,
-              lineNumber: 90
+              lineNumber: 88
             }
           }),
           _react2.default.createElement(_courseDrugsList2.default, { courseItem: this.state.course, __source: {
               fileName: _jsxFileName,
-              lineNumber: 91
+              lineNumber: 89
             }
           }),
           _react2.default.createElement(
@@ -83133,7 +83145,7 @@ var CoursePage = function (_Component) {
               style: { margin: 15, backgroundColor: _styles.theme.green },
               kind: 'squared', __source: {
                 fileName: _jsxFileName,
-                lineNumber: 92
+                lineNumber: 90
               }
             },
             'Apply to course'
@@ -83142,7 +83154,7 @@ var CoursePage = function (_Component) {
       }
       return _react2.default.createElement(_courseCalendar2.default, { courseItem: this.state.course, __source: {
           fileName: _jsxFileName,
-          lineNumber: 102
+          lineNumber: 100
         }
       });
     }
@@ -83153,14 +83165,14 @@ var CoursePage = function (_Component) {
         _reactNative.ScrollView,
         { style: _styles.coursePageStyles.container, scrollEnabled: this.state.canBeApplied, __source: {
             fileName: _jsxFileName,
-            lineNumber: 107
+            lineNumber: 105
           }
         },
         this.getCourseBottom(),
         _react2.default.createElement(_pushController2.default, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 109
+            lineNumber: 107
           }
         })
       );
@@ -93361,6 +93373,10 @@ var _reactNative = require(25            ); // 25 = react-native
 
 var _nachosUi = require(349        ); // 349 = nachos-ui
 
+var _reactNativePushNotification = require(1109                            ); // 1109 = react-native-push-notification
+
+var _reactNativePushNotification2 = babelHelpers.interopRequireDefault(_reactNativePushNotification);
+
 var _styles = require(1100         ); // 1100 = ./../styles
 
 var _feathers = require(625            ); // 625 = ./../feathers
@@ -93390,10 +93406,9 @@ var SettingsPage = function (_Component) {
 
       return _react2.default.createElement(
         _reactNative.View,
-        {
-          __source: {
+        { style: _styles.settingsPageStyle.container, __source: {
             fileName: _jsxFileName,
-            lineNumber: 25
+            lineNumber: 26
           }
         },
         _react2.default.createElement(
@@ -93403,13 +93418,28 @@ var SettingsPage = function (_Component) {
               return _this2.signOut();
             },
             type: 'danger',
-            style: { margin: 15, backgroundColor: _styles.theme.red },
+            style: { marginTop: 15, backgroundColor: _styles.theme.blue },
             kind: 'squared', __source: {
               fileName: _jsxFileName,
-              lineNumber: 26
+              lineNumber: 27
             }
           },
           'Logout'
+        ),
+        _react2.default.createElement(
+          _nachosUi.Button,
+          {
+            onPress: function onPress() {
+              return _reactNativePushNotification2.default.cancelAllLocalNotifications();
+            },
+            type: 'danger',
+            style: { backgroundColor: _styles.theme.red },
+            kind: 'squared', __source: {
+              fileName: _jsxFileName,
+              lineNumber: 34
+            }
+          },
+          'Cancel all notifications'
         )
       );
     }

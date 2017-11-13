@@ -54,7 +54,7 @@ export default class CoursePage extends Component < {} > {
           this.setState({course: course, canBeApplied: false})
         }
       })
-      // this.scheduleNotifications(this.state.course.medicineList)
+      this.scheduleNotifications(this.state.course.medicineList)
     }).catch((err) => {
       console.log(err);
     })
@@ -74,8 +74,6 @@ export default class CoursePage extends Component < {} > {
         }
       }
     }
-
-    PushNotification.cancelAllLocalNotifications()
 
   }
 
