@@ -179,6 +179,17 @@ const courseCalendarStyle = StyleSheet.create({
   }
 });
 
+const settingsPageStyle = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    // alignItems: 'center',
+  },
+  button: {
+    marginTop: 20
+  }
+});
+
 export {
   theme,
   loginPageStyles,
@@ -190,5 +201,6 @@ export {
   courseCardStyles,
   courseDrugsListStyles,
   listItem,
-  courseCalendarStyle
+  courseCalendarStyle,
+  settingsPageStyle
 };
