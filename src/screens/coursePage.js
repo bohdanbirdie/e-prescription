@@ -4,6 +4,8 @@ import {ScrollView, View} from 'react-native';
 import PushNotification from 'react-native-push-notification';
 import moment from 'moment';
 import {Button} from 'nachos-ui';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { BlurView } from 'react-native-blur';
 
 import PushController from './../components/shared/pushController'
 import CourseCard from './../components/courses/courseCard'
@@ -19,6 +21,7 @@ export default class CoursePage extends Component < {} > {
     const {canBeApplied} = this.defineStatus(finished, startedAt)
     this.state = {
       course: this.props.course,
+      spinner: false,
       canBeApplied,
     }
   }
@@ -35,6 +38,7 @@ export default class CoursePage extends Component < {} > {
   }
 
   applyToCourse() {
+    this.setState({spinner: true})
     app.service('users').patch(null, {
       "courses.$.finished": false,
       "courses.$.startedAt": moment().format('YYYY-MM-DD')
@@ -55,7 +59,9 @@ export default class CoursePage extends Component < {} > {
         }
       })
       this.scheduleNotifications(this.state.course.medicineList)
+      this.setState({spinner: false});
     }).catch((err) => {
+      this.setState({spinner: false});
       console.log(err);
     })
 
@@ -85,6 +91,15 @@ export default class CoursePage extends Component < {} > {
     if (this.state.canBeApplied) {
       return (
         <View>
+          <Spinner visible={this.state.spinner}>
+             <BlurView
+               style={{flex: 1}}
+               viewRef={this.state.viewRef}
+               blurType="light"
+               blurAmount={10}
+             />
+           </Spinner>
+
           <CourseCard courseItem={this.state.course} canBeApplied={canBeApplied => this.enableApply(canBeApplied)}/>
           <CourseDrugsList courseItem={this.state.course}/>
           <Button

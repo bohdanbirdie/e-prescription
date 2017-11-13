@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {View, ListView, TouchableHighlight, Text} from 'react-native';
 import Swipeout from 'react-native-swipeout';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { BlurView } from 'react-native-blur';
 
 import Course from './../components/courses/courseCmp'
 import {app} from './../feathers'
@@ -34,7 +36,9 @@ export default class HomePage extends Component < {} > {
     })
     this.state = {
       user: app.get('user'),
-      dataSource: dataSource.cloneWithRows(app.get('user').courses || [])
+      dataSource: dataSource.cloneWithRows(app.get('user').courses || []),
+      scrollEnabled: true,
+      spinner: false
     }
 
     const updateUser = user => {
@@ -62,7 +66,12 @@ export default class HomePage extends Component < {} > {
       }
     ];
     return (
-      <Swipeout right={swipeBtns} autoClose={true} backgroundColor='transparent'>
+      <Swipeout
+        right={swipeBtns}
+        autoClose={true}
+        backgroundColor='transparent'
+        onOpen={()=>this.setState({scrollEnabled: false})}
+        onClose={()=>this.setState({scrollEnabled: true})}>
         <TouchableHighlight onPress={() => this.goToCoursePage(rowData)} key={rowID}>
           <View>
             <Course courseItem={rowData}/>
@@ -94,6 +103,7 @@ export default class HomePage extends Component < {} > {
   }
 
   deleteCourse(course) {
+    this.setState({spinner: true});
     app.service('users').update(app.get('user')._id, {
       $pull: {
         courses: {
@@ -101,8 +111,10 @@ export default class HomePage extends Component < {} > {
         }
       }
     }).then((value) => {
+      this.setState({spinner: false});
       console.log(value);
     }).catch((err) => {
+      this.setState({spinner: false});
       console.log(err);
     })
 
@@ -121,7 +133,7 @@ export default class HomePage extends Component < {} > {
 
   getCourses() {
     if (this.state.user.courses && this.state.user.courses.length) {
-      return (<ListView dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} enableEmptySections={true}/>)
+      return (<ListView scrollEnabled={this.state.scrollEnabled} dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} enableEmptySections={true}/>)
     }
 
     return (
@@ -132,6 +144,14 @@ export default class HomePage extends Component < {} > {
   render() {
     return (
       <View style={styles.container}>
+        <Spinner visible={this.state.spinner}>
+           <BlurView
+             style={{flex: 1}}
+             viewRef={this.state.viewRef}
+             blurType="light"
+             blurAmount={10}
+           />
+         </Spinner>
         {this.getCourses()}
       </View>
     );
