@@ -55137,23 +55137,23 @@ var _homePage = require(1102        ); // 1102 = ./homePage
 
 var _homePage2 = babelHelpers.interopRequireDefault(_homePage);
 
-var _coursePage = require(1108          ); // 1108 = ./coursePage
+var _coursePage = require(1111          ); // 1111 = ./coursePage
 
 var _coursePage2 = babelHelpers.interopRequireDefault(_coursePage);
 
-var _addCoursePage = require(1150             ); // 1150 = ./addCoursePage
+var _addCoursePage = require(1153             ); // 1153 = ./addCoursePage
 
 var _addCoursePage2 = babelHelpers.interopRequireDefault(_addCoursePage);
 
-var _addDrugPage = require(1151           ); // 1151 = ./addDrugPage
+var _addDrugPage = require(1154           ); // 1154 = ./addDrugPage
 
 var _addDrugPage2 = babelHelpers.interopRequireDefault(_addDrugPage);
 
-var _settingsPage = require(1152            ); // 1152 = ./settingsPage
+var _settingsPage = require(1155            ); // 1155 = ./settingsPage
 
 var _settingsPage2 = babelHelpers.interopRequireDefault(_settingsPage);
 
-var _qrReaderPage = require(1153            ); // 1153 = ./qrReaderPage
+var _qrReaderPage = require(1156            ); // 1156 = ./qrReaderPage
 
 var _qrReaderPage2 = babelHelpers.interopRequireDefault(_qrReaderPage);
 
@@ -81792,7 +81792,13 @@ var _reactNativeSwipeout = require(1103                   ); // 1103 = react-nat
 
 var _reactNativeSwipeout2 = babelHelpers.interopRequireDefault(_reactNativeSwipeout);
 
-var _courseCmp = require(1107                               ); // 1107 = ./../components/courses/courseCmp
+var _reactNativeLoadingSpinnerOverlay = require(624                                   ); // 624 = react-native-loading-spinner-overlay
+
+var _reactNativeLoadingSpinnerOverlay2 = babelHelpers.interopRequireDefault(_reactNativeLoadingSpinnerOverlay);
+
+var _reactNativeBlur = require(1107               ); // 1107 = react-native-blur
+
+var _courseCmp = require(1110                               ); // 1110 = ./../components/courses/courseCmp
 
 var _courseCmp2 = babelHelpers.interopRequireDefault(_courseCmp);
 
@@ -81815,7 +81821,9 @@ var HomePage = function (_Component) {
     });
     _this.state = {
       user: _feathers.app.get('user'),
-      dataSource: dataSource.cloneWithRows(_feathers.app.get('user').courses || [])
+      dataSource: dataSource.cloneWithRows(_feathers.app.get('user').courses || []),
+      scrollEnabled: true,
+      spinner: false
     };
 
     var updateUser = function updateUser(user) {
@@ -81847,9 +81855,18 @@ var HomePage = function (_Component) {
       }];
       return _react2.default.createElement(
         _reactNativeSwipeout2.default,
-        { right: swipeBtns, autoClose: true, backgroundColor: 'transparent', __source: {
+        {
+          right: swipeBtns,
+          autoClose: true,
+          backgroundColor: 'transparent',
+          onOpen: function onOpen() {
+            return _this2.setState({ scrollEnabled: false });
+          },
+          onClose: function onClose() {
+            return _this2.setState({ scrollEnabled: true });
+          }, __source: {
             fileName: _jsxFileName,
-            lineNumber: 65
+            lineNumber: 69
           }
         },
         _react2.default.createElement(
@@ -81858,7 +81875,7 @@ var HomePage = function (_Component) {
               return _this2.goToCoursePage(rowData);
             }, key: rowID, __source: {
               fileName: _jsxFileName,
-              lineNumber: 66
+              lineNumber: 75
             }
           },
           _react2.default.createElement(
@@ -81866,12 +81883,12 @@ var HomePage = function (_Component) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 67
+                lineNumber: 76
               }
             },
             _react2.default.createElement(_courseCmp2.default, { courseItem: rowData, __source: {
                 fileName: _jsxFileName,
-                lineNumber: 68
+                lineNumber: 77
               }
             })
           )
@@ -81901,6 +81918,9 @@ var HomePage = function (_Component) {
   }, {
     key: 'deleteCourse',
     value: function deleteCourse(course) {
+      var _this3 = this;
+
+      this.setState({ spinner: true });
       _feathers.app.service('users').update(_feathers.app.get('user')._id, {
         $pull: {
           courses: {
@@ -81908,8 +81928,10 @@ var HomePage = function (_Component) {
           }
         }
       }).then(function (value) {
+        _this3.setState({ spinner: false });
         console.log(value);
       }).catch(function (err) {
+        _this3.setState({ spinner: false });
         console.log(err);
       });
     }
@@ -81928,9 +81950,9 @@ var HomePage = function (_Component) {
     key: 'getCourses',
     value: function getCourses() {
       if (this.state.user.courses && this.state.user.courses.length) {
-        return _react2.default.createElement(_reactNative.ListView, { dataSource: this.state.dataSource, renderRow: this.renderRow.bind(this), enableEmptySections: true, __source: {
+        return _react2.default.createElement(_reactNative.ListView, { scrollEnabled: this.state.scrollEnabled, dataSource: this.state.dataSource, renderRow: this.renderRow.bind(this), enableEmptySections: true, __source: {
             fileName: _jsxFileName,
-            lineNumber: 124
+            lineNumber: 136
           }
         });
       }
@@ -81940,7 +81962,7 @@ var HomePage = function (_Component) {
         {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 128
+            lineNumber: 140
           }
         },
         'No courses yet'
@@ -81953,9 +81975,27 @@ var HomePage = function (_Component) {
         _reactNative.View,
         { style: _styles.homePageStyles.container, __source: {
             fileName: _jsxFileName,
-            lineNumber: 134
+            lineNumber: 146
           }
         },
+        _react2.default.createElement(
+          _reactNativeLoadingSpinnerOverlay2.default,
+          { visible: this.state.spinner, __source: {
+              fileName: _jsxFileName,
+              lineNumber: 147
+            }
+          },
+          _react2.default.createElement(_reactNativeBlur.BlurView, {
+            style: { flex: 1 },
+            viewRef: this.state.viewRef,
+            blurType: 'light',
+            blurAmount: 10,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 148
+            }
+          })
+        ),
         this.getCourses()
       );
     }
@@ -82838,6 +82878,139 @@ var styles = _reactNative.StyleSheet.create({
 
 exports.default = styles;
 }, 1106, null, "react-native-swipeout/dist/styles.js");
+__d(/* react-native-blur/index.js */function(global, require, module, exports) {var BlurView = require(1108            ); // 1108 = ./src/BlurView
+var VibrancyView = require(1109                ); // 1109 = ./src/VibrancyView
+
+module.exports = {
+    BlurView: BlurView,
+    VibrancyView: VibrancyView
+};
+}, 1107, null, "react-native-blur/index.js");
+__d(/* react-native-blur/src/BlurView.ios.js */function(global, require, module, exports) {var _jsxFileName = '/Users/bogdanptyts/dev/react-native/e-prescription/node_modules/react-native-blur/src/BlurView.ios.js';
+
+var _react = require(15     ); // 15 = react
+
+var _react2 = babelHelpers.interopRequireDefault(_react);
+
+var _propTypes = require(140         ); // 140 = prop-types
+
+var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
+
+var _reactNative = require(25            ); // 25 = react-native
+
+var BlurView = function (_Component) {
+  babelHelpers.inherits(BlurView, _Component);
+
+  function BlurView() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    babelHelpers.classCallCheck(this, BlurView);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = babelHelpers.possibleConstructorReturn(this, (_ref = BlurView.__proto__ || Object.getPrototypeOf(BlurView)).call.apply(_ref, [this].concat(args))), _this), _this.setNativeProps = function (nativeProps) {
+      if (_this._root) {
+        _this._root.setNativeProps(nativeProps);
+      }
+    }, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
+  }
+
+  babelHelpers.createClass(BlurView, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(NativeBlurView, babelHelpers.extends({}, this.props, {
+        style: [{ backgroundColor: 'transparent' }, this.props.style],
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 14
+        }
+      }));
+    }
+  }]);
+  return BlurView;
+}(_react.Component);
+
+BlurView.propTypes = babelHelpers.extends({}, _reactNative.ViewPropTypes || _reactNative.View.propTypes, {
+  blurType: _propTypes2.default.oneOf(['dark', 'light', 'xlight', 'prominent', 'regular', 'extraDark']),
+  blurAmount: _propTypes2.default.number
+});
+
+BlurView.defaultProps = {
+  blurType: 'dark',
+  blurAmount: 10
+};
+
+var NativeBlurView = (0, _reactNative.requireNativeComponent)('BlurView', BlurView);
+
+module.exports = BlurView;
+}, 1108, null, "react-native-blur/src/BlurView.ios.js");
+__d(/* react-native-blur/src/VibrancyView.ios.js */function(global, require, module, exports) {var _jsxFileName = '/Users/bogdanptyts/dev/react-native/e-prescription/node_modules/react-native-blur/src/VibrancyView.ios.js';
+
+var _react = require(15     ); // 15 = react
+
+var _react2 = babelHelpers.interopRequireDefault(_react);
+
+var _propTypes = require(140         ); // 140 = prop-types
+
+var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
+
+var _reactNative = require(25            ); // 25 = react-native
+
+var VibrancyView = function (_Component) {
+  babelHelpers.inherits(VibrancyView, _Component);
+
+  function VibrancyView() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    babelHelpers.classCallCheck(this, VibrancyView);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = babelHelpers.possibleConstructorReturn(this, (_ref = VibrancyView.__proto__ || Object.getPrototypeOf(VibrancyView)).call.apply(_ref, [this].concat(args))), _this), _this.setNativeProps = function (nativeProps) {
+      if (_this._root) {
+        _this._root.setNativeProps(nativeProps);
+      }
+    }, _temp), babelHelpers.possibleConstructorReturn(_this, _ret);
+  }
+
+  babelHelpers.createClass(VibrancyView, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(NativeVibrancyView, babelHelpers.extends({}, this.props, {
+        style: [{
+          backgroundColor: 'transparent'
+        }, this.props.style],
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 14
+        }
+      }));
+    }
+  }]);
+  return VibrancyView;
+}(_react.Component);
+
+VibrancyView.propTypes = {
+  blurType: _propTypes2.default.string,
+  blurAmount: _propTypes2.default.number.isRequired
+};
+
+VibrancyView.defaultProps = {
+  blurAmount: 10
+};
+
+var NativeVibrancyView = (0, _reactNative.requireNativeComponent)('VibrancyView', VibrancyView);
+
+module.exports = VibrancyView;
+}, 1109, null, "react-native-blur/src/VibrancyView.ios.js");
 __d(/* ePrescription/src/components/courses/courseCmp.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -82979,7 +83152,7 @@ exports.default = Course;
 Course.propTypes = {
   courseItem: _propTypes2.default.object
 };
-}, 1107, null, "ePrescription/src/components/courses/courseCmp.js");
+}, 1110, null, "ePrescription/src/components/courses/courseCmp.js");
 __d(/* ePrescription/src/screens/coursePage.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -82995,29 +83168,35 @@ var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _reactNativePushNotification = require(1109                            ); // 1109 = react-native-push-notification
+var _reactNativePushNotification = require(1112                            ); // 1112 = react-native-push-notification
 
 var _reactNativePushNotification2 = babelHelpers.interopRequireDefault(_reactNativePushNotification);
 
-var _moment = require(1111    ); // 1111 = moment
+var _moment = require(1114    ); // 1114 = moment
 
 var _moment2 = babelHelpers.interopRequireDefault(_moment);
 
 var _nachosUi = require(349        ); // 349 = nachos-ui
 
-var _pushController = require(1112                                   ); // 1112 = ./../components/shared/pushController
+var _reactNativeLoadingSpinnerOverlay = require(624                                   ); // 624 = react-native-loading-spinner-overlay
+
+var _reactNativeLoadingSpinnerOverlay2 = babelHelpers.interopRequireDefault(_reactNativeLoadingSpinnerOverlay);
+
+var _reactNativeBlur = require(1107               ); // 1107 = react-native-blur
+
+var _pushController = require(1115                                   ); // 1115 = ./../components/shared/pushController
 
 var _pushController2 = babelHelpers.interopRequireDefault(_pushController);
 
-var _courseCard = require(1113                                ); // 1113 = ./../components/courses/courseCard
+var _courseCard = require(1116                                ); // 1116 = ./../components/courses/courseCard
 
 var _courseCard2 = babelHelpers.interopRequireDefault(_courseCard);
 
-var _courseDrugsList = require(1114                                     ); // 1114 = ./../components/courses/courseDrugsList
+var _courseDrugsList = require(1117                                     ); // 1117 = ./../components/courses/courseDrugsList
 
 var _courseDrugsList2 = babelHelpers.interopRequireDefault(_courseDrugsList);
 
-var _courseCalendar = require(1121                                    ); // 1121 = ./../components/courses/courseCalendar
+var _courseCalendar = require(1124                                    ); // 1124 = ./../components/courses/courseCalendar
 
 var _courseCalendar2 = babelHelpers.interopRequireDefault(_courseCalendar);
 
@@ -83042,6 +83221,7 @@ var CoursePage = function (_Component) {
 
     _this.state = {
       course: _this.props.course,
+      spinner: false,
       canBeApplied: canBeApplied
     };
     return _this;
@@ -83064,6 +83244,7 @@ var CoursePage = function (_Component) {
     value: function applyToCourse() {
       var _this2 = this;
 
+      this.setState({ spinner: true });
       _feathers.app.service('users').patch(null, {
         "courses.$.finished": false,
         "courses.$.startedAt": (0, _moment2.default)().format('YYYY-MM-DD')
@@ -83084,7 +83265,9 @@ var CoursePage = function (_Component) {
           }
         });
         _this2.scheduleNotifications(_this2.state.course.medicineList);
+        _this2.setState({ spinner: false });
       }).catch(function (err) {
+        _this2.setState({ spinner: false });
         console.log(err);
       });
     }
@@ -83120,19 +83303,37 @@ var CoursePage = function (_Component) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 87
+              lineNumber: 93
             }
           },
+          _react2.default.createElement(
+            _reactNativeLoadingSpinnerOverlay2.default,
+            { visible: this.state.spinner, __source: {
+                fileName: _jsxFileName,
+                lineNumber: 94
+              }
+            },
+            _react2.default.createElement(_reactNativeBlur.BlurView, {
+              style: { flex: 1 },
+              viewRef: this.state.viewRef,
+              blurType: 'light',
+              blurAmount: 10,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 95
+              }
+            })
+          ),
           _react2.default.createElement(_courseCard2.default, { courseItem: this.state.course, canBeApplied: function canBeApplied(_canBeApplied) {
               return _this3.enableApply(_canBeApplied);
             }, __source: {
               fileName: _jsxFileName,
-              lineNumber: 88
+              lineNumber: 103
             }
           }),
           _react2.default.createElement(_courseDrugsList2.default, { courseItem: this.state.course, __source: {
               fileName: _jsxFileName,
-              lineNumber: 89
+              lineNumber: 104
             }
           }),
           _react2.default.createElement(
@@ -83145,7 +83346,7 @@ var CoursePage = function (_Component) {
               style: { margin: 15, backgroundColor: _styles.theme.green },
               kind: 'squared', __source: {
                 fileName: _jsxFileName,
-                lineNumber: 90
+                lineNumber: 105
               }
             },
             'Apply to course'
@@ -83154,7 +83355,7 @@ var CoursePage = function (_Component) {
       }
       return _react2.default.createElement(_courseCalendar2.default, { courseItem: this.state.course, __source: {
           fileName: _jsxFileName,
-          lineNumber: 100
+          lineNumber: 115
         }
       });
     }
@@ -83165,14 +83366,14 @@ var CoursePage = function (_Component) {
         _reactNative.ScrollView,
         { style: _styles.coursePageStyles.container, scrollEnabled: this.state.canBeApplied, __source: {
             fileName: _jsxFileName,
-            lineNumber: 105
+            lineNumber: 120
           }
         },
         this.getCourseBottom(),
         _react2.default.createElement(_pushController2.default, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 107
+            lineNumber: 122
           }
         })
       );
@@ -83187,12 +83388,12 @@ exports.default = CoursePage;
 CoursePage.propTypes = {
   course: _propTypes2.default.object
 };
-}, 1108, null, "ePrescription/src/screens/coursePage.js");
+}, 1111, null, "ePrescription/src/screens/coursePage.js");
 __d(/* react-native-push-notification/index.js */function(global, require, module, exports) {
 
 'use strict';
 
-var RNNotificationsComponent = require(1110         ); // 1110 = ./component
+var RNNotificationsComponent = require(1113         ); // 1113 = ./component
 
 var AppState = RNNotificationsComponent.state;
 var RNNotifications = RNNotificationsComponent.component;
@@ -83467,7 +83668,7 @@ Notifications.clearAllNotifications = function () {
 };
 
 module.exports = Notifications;
-}, 1109, null, "react-native-push-notification/index.js");
+}, 1112, null, "react-native-push-notification/index.js");
 __d(/* react-native-push-notification/component/index.ios.js */function(global, require, module, exports) {'use strict';
 
 var _reactNative = require(25            ); // 25 = react-native
@@ -83476,7 +83677,7 @@ module.exports = {
   state: _reactNative.AppState,
   component: _reactNative.PushNotificationIOS
 };
-}, 1110, null, "react-native-push-notification/component/index.ios.js");
+}, 1113, null, "react-native-push-notification/component/index.ios.js");
 __d(/* moment/moment.js */function(global, require, module, exports) {
 
 ;(function (global, factory) {
@@ -87464,14 +87665,14 @@ __d(/* moment/moment.js */function(global, require, module, exports) {
 
     return hooks;
 });
-}, 1111, null, "moment/moment.js");
+}, 1114, null, "moment/moment.js");
 __d(/* ePrescription/src/components/shared/pushController.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
 var _react = require(15     ); // 15 = react
 
-var _reactNativePushNotification = require(1109                            ); // 1109 = react-native-push-notification
+var _reactNativePushNotification = require(1112                            ); // 1112 = react-native-push-notification
 
 var _reactNativePushNotification2 = babelHelpers.interopRequireDefault(_reactNativePushNotification);
 
@@ -87504,7 +87705,7 @@ var PushController = function (_Component) {
 }(_react.Component);
 
 exports.default = PushController;
-}, 1112, null, "ePrescription/src/components/shared/pushController.js");
+}, 1115, null, "ePrescription/src/components/shared/pushController.js");
 __d(/* ePrescription/src/components/courses/courseCard.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -87522,7 +87723,7 @@ var _reactNative = require(25            ); // 25 = react-native
 
 var _nachosUi = require(349        ); // 349 = nachos-ui
 
-var _moment = require(1111    ); // 1111 = moment
+var _moment = require(1114    ); // 1114 = moment
 
 var _moment2 = babelHelpers.interopRequireDefault(_moment);
 
@@ -87697,7 +87898,7 @@ CourseCard.propTypes = {
   courseItem: _propTypes2.default.object,
   canBeApplied: _propTypes2.default.func
 };
-}, 1113, null, "ePrescription/src/components/courses/courseCard.js");
+}, 1116, null, "ePrescription/src/components/courses/courseCard.js");
 __d(/* ePrescription/src/components/courses/courseDrugsList.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -87715,15 +87916,15 @@ var _reactNative = require(25            ); // 25 = react-native
 
 var _nachosUi = require(349        ); // 349 = nachos-ui
 
-var _reactNativeCollapsible = require(1115                      ); // 1115 = react-native-collapsible
+var _reactNativeCollapsible = require(1118                      ); // 1118 = react-native-collapsible
 
 var _reactNativeCollapsible2 = babelHelpers.interopRequireDefault(_reactNativeCollapsible);
 
-var _reactNativeDatepicker = require(1117                     ); // 1117 = react-native-datepicker
+var _reactNativeDatepicker = require(1120                     ); // 1120 = react-native-datepicker
 
 var _reactNativeDatepicker2 = babelHelpers.interopRequireDefault(_reactNativeDatepicker);
 
-var _listItem = require(1120                  ); // 1120 = ./../shared/listItem
+var _listItem = require(1123                  ); // 1123 = ./../shared/listItem
 
 var _listItem2 = babelHelpers.interopRequireDefault(_listItem);
 
@@ -87883,7 +88084,7 @@ exports.default = CourseDrugsList;
 CourseDrugsList.propTypes = {
   courseItem: _propTypes2.default.object
 };
-}, 1114, null, "ePrescription/src/components/courses/courseDrugsList.js");
+}, 1117, null, "ePrescription/src/components/courses/courseDrugsList.js");
 __d(/* react-native-collapsible/Collapsible.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -87899,7 +88100,7 @@ var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _config = require(1116      ); // 1116 = ./config
+var _config = require(1119      ); // 1119 = ./config
 
 var ANIMATED_EASING_PREFIXES = ['easeInOut', 'easeOut', 'easeIn'];
 
@@ -88110,7 +88311,7 @@ Collapsible.defaultProps = {
   easing: 'easeOutCubic'
 };
 exports.default = Collapsible;
-}, 1115, null, "react-native-collapsible/Collapsible.js");
+}, 1118, null, "react-native-collapsible/Collapsible.js");
 __d(/* react-native-collapsible/config/index.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -88119,7 +88320,7 @@ exports.ViewPropTypes = undefined;
 var _reactNative = require(25            ); // 25 = react-native
 
 var ViewPropTypes = exports.ViewPropTypes = _reactNative.ViewPropTypes || _reactNative.View.propTypes;
-}, 1116, null, "react-native-collapsible/config/index.js");
+}, 1119, null, "react-native-collapsible/config/index.js");
 __d(/* react-native-datepicker/index.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -88135,11 +88336,11 @@ var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _style = require(1118     ); // 1118 = ./style
+var _style = require(1121     ); // 1121 = ./style
 
 var _style2 = babelHelpers.interopRequireDefault(_style);
 
-var _moment = require(1111    ); // 1111 = moment
+var _moment = require(1114    ); // 1114 = moment
 
 var _moment2 = babelHelpers.interopRequireDefault(_moment);
 
@@ -88727,7 +88928,7 @@ DatePicker.defaultProps = {
   duration: 300,
   confirmBtnText: '确定',
   cancelBtnText: '取消',
-  iconSource: require(1119             ), // 1119 = ./date_icon.png
+  iconSource: require(1122             ), // 1122 = ./date_icon.png
   customStyles: {},
 
   showIcon: true,
@@ -88766,7 +88967,7 @@ DatePicker.propTypes = {
 };
 
 exports.default = DatePicker;
-}, 1117, null, "react-native-datepicker/index.js");
+}, 1120, null, "react-native-datepicker/index.js");
 __d(/* react-native-datepicker/style.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -88847,9 +89048,9 @@ var style = _reactNative.StyleSheet.create({
 });
 
 exports.default = style;
-}, 1118, null, "react-native-datepicker/style.js");
+}, 1121, null, "react-native-datepicker/style.js");
 __d(/* react-native-datepicker/date_icon.png */function(global, require, module, exports) {module.exports=require(173                                         ).registerAsset({"__packager_asset":true,"httpServerLocation":"/assets/node_modules/react-native-datepicker","width":64,"height":64,"scales":[1],"hash":"1edd5017f455b09c608e175b1285c06d","name":"date_icon","type":"png"}); // 173 = react-native/Libraries/Image/AssetRegistry
-}, 1119, null, "react-native-datepicker/date_icon.png");
+}, 1122, null, "react-native-datepicker/date_icon.png");
 __d(/* ePrescription/src/components/shared/listItem.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -88947,7 +89148,7 @@ ListItem.propTypes = {
   rightIconColor: _propTypes2.default.string,
   enableRightIcon: _propTypes2.default.bool
 };
-}, 1120, null, "ePrescription/src/components/shared/listItem.js");
+}, 1123, null, "ePrescription/src/components/shared/listItem.js");
 __d(/* ePrescription/src/components/courses/courseCalendar.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -88963,9 +89164,9 @@ var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _reactNativeCalendars = require(1122                    ); // 1122 = react-native-calendars
+var _reactNativeCalendars = require(1125                    ); // 1125 = react-native-calendars
 
-var _moment = require(1111    ); // 1111 = moment
+var _moment = require(1114    ); // 1114 = moment
 
 var _moment2 = babelHelpers.interopRequireDefault(_moment);
 
@@ -89229,12 +89430,12 @@ exports.default = CourseCalendar;
 CourseCalendar.propTypes = {
   courseItem: _propTypes2.default.object
 };
-}, 1121, null, "ePrescription/src/components/courses/courseCalendar.js");
+}, 1124, null, "ePrescription/src/components/courses/courseCalendar.js");
 __d(/* react-native-calendars/src/index.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _calendar = require(1123        ); // 1123 = ./calendar
+var _calendar = require(1126        ); // 1126 = ./calendar
 
 Object.defineProperty(exports, 'Calendar', {
   enumerable: true,
@@ -89243,7 +89444,7 @@ Object.defineProperty(exports, 'Calendar', {
   }
 });
 
-var _calendarList = require(1140             ); // 1140 = ./calendar-list
+var _calendarList = require(1143             ); // 1143 = ./calendar-list
 
 Object.defineProperty(exports, 'CalendarList', {
   enumerable: true,
@@ -89252,7 +89453,7 @@ Object.defineProperty(exports, 'CalendarList', {
   }
 });
 
-var _agenda = require(1143      ); // 1143 = ./agenda
+var _agenda = require(1146      ); // 1146 = ./agenda
 
 Object.defineProperty(exports, 'Agenda', {
   enumerable: true,
@@ -89261,7 +89462,7 @@ Object.defineProperty(exports, 'Agenda', {
   }
 });
 
-var _xdate = require(1124   ); // 1124 = xdate
+var _xdate = require(1127   ); // 1127 = xdate
 
 Object.defineProperty(exports, 'LocaleConfig', {
   enumerable: true,
@@ -89269,7 +89470,7 @@ Object.defineProperty(exports, 'LocaleConfig', {
     return babelHelpers.interopRequireDefault(_xdate).default;
   }
 });
-}, 1122, null, "react-native-calendars/src/index.js");
+}, 1125, null, "react-native-calendars/src/index.js");
 __d(/* react-native-calendars/src/calendar/index.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -89285,37 +89486,37 @@ var _propTypes = require(140         ); // 140 = prop-types
 
 var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
 
-var _xdate = require(1124   ); // 1124 = xdate
+var _xdate = require(1127   ); // 1127 = xdate
 
 var _xdate2 = babelHelpers.interopRequireDefault(_xdate);
 
-var _dateutils = require(1125          ); // 1125 = ../dateutils
+var _dateutils = require(1128          ); // 1128 = ../dateutils
 
 var _dateutils2 = babelHelpers.interopRequireDefault(_dateutils);
 
-var _interface = require(1126          ); // 1126 = ../interface
+var _interface = require(1129          ); // 1129 = ../interface
 
-var _style = require(1127     ); // 1127 = ./style
+var _style = require(1130     ); // 1130 = ./style
 
 var _style2 = babelHelpers.interopRequireDefault(_style);
 
-var _basic = require(1129         ); // 1129 = ./day/basic
+var _basic = require(1132         ); // 1132 = ./day/basic
 
 var _basic2 = babelHelpers.interopRequireDefault(_basic);
 
-var _interactive = require(1131               ); // 1131 = ./day/interactive
+var _interactive = require(1134               ); // 1134 = ./day/interactive
 
 var _interactive2 = babelHelpers.interopRequireDefault(_interactive);
 
-var _multiDot = require(1133             ); // 1133 = ./day/multi-dot
+var _multiDot = require(1136             ); // 1136 = ./day/multi-dot
 
 var _multiDot2 = babelHelpers.interopRequireDefault(_multiDot);
 
-var _header = require(1135      ); // 1135 = ./header
+var _header = require(1138      ); // 1138 = ./header
 
 var _header2 = babelHelpers.interopRequireDefault(_header);
 
-var _updater = require(1139       ); // 1139 = ./updater
+var _updater = require(1142       ); // 1142 = ./updater
 
 var _updater2 = babelHelpers.interopRequireDefault(_updater);
 
@@ -89580,7 +89781,7 @@ Calendar.propTypes = {
   disabledByDefault: _propTypes2.default.bool
 };
 exports.default = Calendar;
-}, 1123, null, "react-native-calendars/src/calendar/index.js");
+}, 1126, null, "react-native-calendars/src/calendar/index.js");
 __d(/* xdate/src/xdate.js */function(global, require, module, exports) {/**
  * @preserve XDate v@VERSION
  * Docs & Licensing: http://arshaw.com/xdate/
@@ -90194,8 +90395,8 @@ var XDate = function (Date, Math, Array, undefined) {
 
 	return XDate;
 }(Date, Math, Array);
-}, 1124, null, "xdate/src/xdate.js");
-__d(/* react-native-calendars/src/dateutils.js */function(global, require, module, exports) {var XDate = require(1124   ); // 1124 = xdate
+}, 1127, null, "xdate/src/xdate.js");
+__d(/* react-native-calendars/src/dateutils.js */function(global, require, module, exports) {var XDate = require(1127   ); // 1127 = xdate
 
 function sameMonth(a, b) {
   return a instanceof XDate && b instanceof XDate && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
@@ -90287,8 +90488,8 @@ module.exports = {
   isLTE: isLTE,
   isGTE: isGTE
 };
-}, 1125, null, "react-native-calendars/src/dateutils.js");
-__d(/* react-native-calendars/src/interface.js */function(global, require, module, exports) {var XDate = require(1124   ); // 1124 = xdate
+}, 1128, null, "react-native-calendars/src/dateutils.js");
+__d(/* react-native-calendars/src/interface.js */function(global, require, module, exports) {var XDate = require(1127   ); // 1127 = xdate
 
 function padNumber(n) {
   if (n < 10) {
@@ -90330,7 +90531,7 @@ module.exports = {
   xdateToData: xdateToData,
   parseDate: parseDate
 };
-}, 1126, null, "react-native-calendars/src/interface.js");
+}, 1129, null, "react-native-calendars/src/interface.js");
 __d(/* react-native-calendars/src/calendar/style.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -90338,7 +90539,7 @@ exports.default = getStyle;
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _style = require(1128      ); // 1128 = ../style
+var _style = require(1131      ); // 1131 = ../style
 
 var defaultStyle = babelHelpers.interopRequireWildcard(_style);
 
@@ -90364,7 +90565,7 @@ function getStyle() {
     }
   }, theme[STYLESHEET_ID] || {}));
 }
-}, 1127, null, "react-native-calendars/src/calendar/style.js");
+}, 1130, null, "react-native-calendars/src/calendar/style.js");
 __d(/* react-native-calendars/src/style.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -90408,7 +90609,7 @@ var agendaDayTextColor = exports.agendaDayTextColor = '#7a92a5';
 var agendaDayNumColor = exports.agendaDayNumColor = '#7a92a5';
 var agendaTodayColor = exports.agendaTodayColor = textLinkColor;
 var agendaKnobColor = exports.agendaKnobColor = _reactNative.Platform.OS === 'ios' ? '#f2F4f5' : '#4ac4f7';
-}, 1128, null, "react-native-calendars/src/style.js");
+}, 1131, null, "react-native-calendars/src/style.js");
 __d(/* react-native-calendars/src/calendar/day/basic/index.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -90424,7 +90625,7 @@ var _propTypes = require(140         ); // 140 = prop-types
 
 var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
 
-var _style = require(1130     ); // 1130 = ./style
+var _style = require(1133     ); // 1133 = ./style
 
 var _style2 = babelHelpers.interopRequireDefault(_style);
 
@@ -90536,7 +90737,7 @@ Day.propTypes = {
   day: _propTypes2.default.object
 };
 exports.default = Day;
-}, 1129, null, "react-native-calendars/src/calendar/day/basic/index.js");
+}, 1132, null, "react-native-calendars/src/calendar/day/basic/index.js");
 __d(/* react-native-calendars/src/calendar/day/basic/style.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -90544,7 +90745,7 @@ exports.default = styleConstructor;
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _style = require(1128            ); // 1128 = ../../../style
+var _style = require(1131            ); // 1131 = ../../../style
 
 var defaultStyle = babelHelpers.interopRequireWildcard(_style);
 
@@ -90601,7 +90802,7 @@ function styleConstructor() {
     }
   }, theme[STYLESHEET_ID] || {}));
 }
-}, 1130, null, "react-native-calendars/src/calendar/day/basic/style.js");
+}, 1133, null, "react-native-calendars/src/calendar/day/basic/style.js");
 __d(/* react-native-calendars/src/calendar/day/interactive/index.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -90617,11 +90818,11 @@ var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _style = require(1128            ); // 1128 = ../../../style
+var _style = require(1131            ); // 1131 = ../../../style
 
 var defaultStyle = babelHelpers.interopRequireWildcard(_style);
 
-var _style2 = require(1132     ); // 1132 = ./style
+var _style2 = require(1135     ); // 1135 = ./style
 
 var _style3 = babelHelpers.interopRequireDefault(_style2);
 
@@ -90861,7 +91062,7 @@ Day.propTypes = {
   markingExists: _propTypes2.default.bool
 };
 exports.default = Day;
-}, 1131, null, "react-native-calendars/src/calendar/day/interactive/index.js");
+}, 1134, null, "react-native-calendars/src/calendar/day/interactive/index.js");
 __d(/* react-native-calendars/src/calendar/day/interactive/style.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -90869,7 +91070,7 @@ exports.default = styleConstructor;
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _style = require(1128            ); // 1128 = ../../../style
+var _style = require(1131            ); // 1131 = ../../../style
 
 var defaultStyle = babelHelpers.interopRequireWildcard(_style);
 
@@ -90944,7 +91145,7 @@ function styleConstructor() {
     }
   }, theme[STYLESHEET_ID] || {}));
 }
-}, 1132, null, "react-native-calendars/src/calendar/day/interactive/style.js");
+}, 1135, null, "react-native-calendars/src/calendar/day/interactive/style.js");
 __d(/* react-native-calendars/src/calendar/day/multi-dot/index.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -90960,7 +91161,7 @@ var _propTypes = require(140         ); // 140 = prop-types
 
 var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
 
-var _style = require(1134     ); // 1134 = ./style
+var _style = require(1137     ); // 1137 = ./style
 
 var _style2 = babelHelpers.interopRequireDefault(_style);
 
@@ -91083,7 +91284,7 @@ Day.propTypes = {
   day: _propTypes2.default.object
 };
 exports.default = Day;
-}, 1133, null, "react-native-calendars/src/calendar/day/multi-dot/index.js");
+}, 1136, null, "react-native-calendars/src/calendar/day/multi-dot/index.js");
 __d(/* react-native-calendars/src/calendar/day/multi-dot/style.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -91091,7 +91292,7 @@ exports.default = styleConstructor;
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _style = require(1128            ); // 1128 = ../../../style
+var _style = require(1131            ); // 1131 = ../../../style
 
 var defaultStyle = babelHelpers.interopRequireWildcard(_style);
 
@@ -91150,7 +91351,7 @@ function styleConstructor() {
     }
   }, theme[STYLESHEET_ID] || {}));
 }
-}, 1134, null, "react-native-calendars/src/calendar/day/multi-dot/style.js");
+}, 1137, null, "react-native-calendars/src/calendar/day/multi-dot/style.js");
 __d(/* react-native-calendars/src/calendar/header/index.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -91162,7 +91363,7 @@ var _react2 = babelHelpers.interopRequireDefault(_react);
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _xdate = require(1124   ); // 1124 = xdate
+var _xdate = require(1127   ); // 1127 = xdate
 
 var _xdate2 = babelHelpers.interopRequireDefault(_xdate);
 
@@ -91170,11 +91371,11 @@ var _propTypes = require(140         ); // 140 = prop-types
 
 var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
 
-var _style = require(1136     ); // 1136 = ./style
+var _style = require(1139     ); // 1139 = ./style
 
 var _style2 = babelHelpers.interopRequireDefault(_style);
 
-var _dateutils = require(1125             ); // 1125 = ../../dateutils
+var _dateutils = require(1128             ); // 1128 = ../../dateutils
 
 var CalendarHeader = function (_Component) {
   babelHelpers.inherits(CalendarHeader, _Component);
@@ -91241,7 +91442,7 @@ var CalendarHeader = function (_Component) {
             }
           },
           this.props.renderArrow ? this.props.renderArrow('left') : _react2.default.createElement(_reactNative.Image, {
-            source: require(1137                 ), // 1137 = ../img/previous.png
+            source: require(1140                 ), // 1140 = ../img/previous.png
             style: this.style.arrowImage,
             __source: {
               fileName: _jsxFileName,
@@ -91257,7 +91458,7 @@ var CalendarHeader = function (_Component) {
             }
           },
           this.props.renderArrow ? this.props.renderArrow('right') : _react2.default.createElement(_reactNative.Image, {
-            source: require(1138             ), // 1138 = ../img/next.png
+            source: require(1141             ), // 1141 = ../img/next.png
             style: this.style.arrowImage,
             __source: {
               fileName: _jsxFileName,
@@ -91347,7 +91548,7 @@ CalendarHeader.propTypes = {
   hideDayNames: _propTypes2.default.bool
 };
 exports.default = CalendarHeader;
-}, 1135, null, "react-native-calendars/src/calendar/header/index.js");
+}, 1138, null, "react-native-calendars/src/calendar/header/index.js");
 __d(/* react-native-calendars/src/calendar/header/style.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -91401,23 +91602,23 @@ exports.default = function () {
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _style = require(1128         ); // 1128 = ../../style
+var _style = require(1131         ); // 1131 = ../../style
 
 var defaultStyle = babelHelpers.interopRequireWildcard(_style);
 
 
 var STYLESHEET_ID = 'stylesheet.calendar.header';
-}, 1136, null, "react-native-calendars/src/calendar/header/style.js");
+}, 1139, null, "react-native-calendars/src/calendar/header/style.js");
 __d(/* react-native-calendars/src/calendar/img/previous.png */function(global, require, module, exports) {module.exports=require(173                                         ).registerAsset({"__packager_asset":true,"httpServerLocation":"/assets/node_modules/react-native-calendars/src/calendar/img","width":8,"height":13.5,"scales":[2],"hash":"a8b98e516b7e5a7770f0bfec609f2d8e","name":"previous","type":"png"}); // 173 = react-native/Libraries/Image/AssetRegistry
-}, 1137, null, "react-native-calendars/src/calendar/img/previous.png");
+}, 1140, null, "react-native-calendars/src/calendar/img/previous.png");
 __d(/* react-native-calendars/src/calendar/img/next.png */function(global, require, module, exports) {module.exports=require(173                                         ).registerAsset({"__packager_asset":true,"httpServerLocation":"/assets/node_modules/react-native-calendars/src/calendar/img","width":8,"height":13.5,"scales":[2],"hash":"3fc49f4d75a5a92eea5f3b1f9a8b12e4","name":"next","type":"png"}); // 173 = react-native/Libraries/Image/AssetRegistry
-}, 1138, null, "react-native-calendars/src/calendar/img/next.png");
+}, 1141, null, "react-native-calendars/src/calendar/img/next.png");
 __d(/* react-native-calendars/src/calendar/updater.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = shouldComponentUpdate;
 
-var _interface = require(1126          ); // 1126 = ../interface
+var _interface = require(1129          ); // 1129 = ../interface
 
 function shouldComponentUpdate(nextProps, nextState) {
   var _this = this;
@@ -91470,7 +91671,7 @@ function shouldComponentUpdate(nextProps, nextState) {
 
   return shouldUpdate.update;
 }
-}, 1139, null, "react-native-calendars/src/calendar/updater.js");
+}, 1142, null, "react-native-calendars/src/calendar/updater.js");
 __d(/* react-native-calendars/src/calendar-list/index.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -91486,25 +91687,25 @@ var _propTypes = require(140         ); // 140 = prop-types
 
 var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
 
-var _xdate = require(1124   ); // 1124 = xdate
+var _xdate = require(1127   ); // 1127 = xdate
 
 var _xdate2 = babelHelpers.interopRequireDefault(_xdate);
 
-var _interface = require(1126          ); // 1126 = ../interface
+var _interface = require(1129          ); // 1129 = ../interface
 
-var _style = require(1141     ); // 1141 = ./style
+var _style = require(1144     ); // 1144 = ./style
 
 var _style2 = babelHelpers.interopRequireDefault(_style);
 
-var _dateutils = require(1125          ); // 1125 = ../dateutils
+var _dateutils = require(1128          ); // 1128 = ../dateutils
 
 var _dateutils2 = babelHelpers.interopRequireDefault(_dateutils);
 
-var _calendar = require(1123         ); // 1123 = ../calendar
+var _calendar = require(1126         ); // 1126 = ../calendar
 
 var _calendar2 = babelHelpers.interopRequireDefault(_calendar);
 
-var _item = require(1142    ); // 1142 = ./item
+var _item = require(1145    ); // 1145 = ./item
 
 var _item2 = babelHelpers.interopRequireDefault(_item);
 
@@ -91703,7 +91904,7 @@ CalendarList.propTypes = babelHelpers.extends({}, _calendar2.default.propTypes, 
   scrollEnabled: _propTypes2.default.bool
 });
 exports.default = CalendarList;
-}, 1140, null, "react-native-calendars/src/calendar-list/index.js");
+}, 1143, null, "react-native-calendars/src/calendar-list/index.js");
 __d(/* react-native-calendars/src/calendar-list/style.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -91711,7 +91912,7 @@ exports.default = getStyle;
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _style = require(1128      ); // 1128 = ../style
+var _style = require(1131      ); // 1131 = ../style
 
 var defaultStyle = babelHelpers.interopRequireWildcard(_style);
 
@@ -91742,7 +91943,7 @@ function getStyle() {
     }
   }, theme[STYLESHEET_ID] || {}));
 }
-}, 1141, null, "react-native-calendars/src/calendar-list/style.js");
+}, 1144, null, "react-native-calendars/src/calendar-list/style.js");
 __d(/* react-native-calendars/src/calendar-list/item.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -91754,11 +91955,11 @@ var _react2 = babelHelpers.interopRequireDefault(_react);
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _calendar = require(1123         ); // 1123 = ../calendar
+var _calendar = require(1126         ); // 1126 = ../calendar
 
 var _calendar2 = babelHelpers.interopRequireDefault(_calendar);
 
-var _style = require(1141     ); // 1141 = ./style
+var _style = require(1144     ); // 1144 = ./style
 
 var _style2 = babelHelpers.interopRequireDefault(_style);
 
@@ -91834,7 +92035,7 @@ var CalendarListItem = function (_Component) {
 }(_react.Component);
 
 exports.default = CalendarListItem;
-}, 1142, null, "react-native-calendars/src/calendar-list/item.js");
+}, 1145, null, "react-native-calendars/src/calendar-list/item.js");
 __d(/* react-native-calendars/src/agenda/index.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -91850,29 +92051,29 @@ var _propTypes = require(140         ); // 140 = prop-types
 
 var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
 
-var _xdate = require(1124   ); // 1124 = xdate
+var _xdate = require(1127   ); // 1127 = xdate
 
 var _xdate2 = babelHelpers.interopRequireDefault(_xdate);
 
-var _interface = require(1126          ); // 1126 = ../interface
+var _interface = require(1129          ); // 1129 = ../interface
 
-var _dateutils = require(1125          ); // 1125 = ../dateutils
+var _dateutils = require(1128          ); // 1128 = ../dateutils
 
 var _dateutils2 = babelHelpers.interopRequireDefault(_dateutils);
 
-var _calendarList = require(1140              ); // 1140 = ../calendar-list
+var _calendarList = require(1143              ); // 1143 = ../calendar-list
 
 var _calendarList2 = babelHelpers.interopRequireDefault(_calendarList);
 
-var _reservationList = require(1144                ); // 1144 = ./reservation-list
+var _reservationList = require(1147                ); // 1147 = ./reservation-list
 
 var _reservationList2 = babelHelpers.interopRequireDefault(_reservationList);
 
-var _style = require(1147     ); // 1147 = ./style
+var _style = require(1150     ); // 1150 = ./style
 
 var _style2 = babelHelpers.interopRequireDefault(_style);
 
-var _input = require(1149      ); // 1149 = ../input
+var _input = require(1152      ); // 1152 = ../input
 
 var HEADER_HEIGHT = 104;
 var KNOB_HEIGHT = 24;
@@ -92358,7 +92559,7 @@ AgendaView.propTypes = {
   monthFormat: _propTypes2.default.string
 };
 exports.default = AgendaView;
-}, 1143, null, "react-native-calendars/src/agenda/index.js");
+}, 1146, null, "react-native-calendars/src/agenda/index.js");
 __d(/* react-native-calendars/src/agenda/reservation-list/index.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -92370,7 +92571,7 @@ var _react2 = babelHelpers.interopRequireDefault(_react);
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _reservation = require(1145           ); // 1145 = ./reservation
+var _reservation = require(1148           ); // 1148 = ./reservation
 
 var _reservation2 = babelHelpers.interopRequireDefault(_reservation);
 
@@ -92378,15 +92579,15 @@ var _propTypes = require(140         ); // 140 = prop-types
 
 var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
 
-var _xdate = require(1124   ); // 1124 = xdate
+var _xdate = require(1127   ); // 1127 = xdate
 
 var _xdate2 = babelHelpers.interopRequireDefault(_xdate);
 
-var _dateutils = require(1125             ); // 1125 = ../../dateutils
+var _dateutils = require(1128             ); // 1128 = ../../dateutils
 
 var _dateutils2 = babelHelpers.interopRequireDefault(_dateutils);
 
-var _style = require(1146     ); // 1146 = ./style
+var _style = require(1149     ); // 1149 = ./style
 
 var _style2 = babelHelpers.interopRequireDefault(_style);
 
@@ -92620,7 +92821,7 @@ ReactComp.propTypes = {
   topDay: _propTypes2.default.instanceOf(_xdate2.default)
 };
 exports.default = ReactComp;
-}, 1144, null, "react-native-calendars/src/agenda/reservation-list/index.js");
+}, 1147, null, "react-native-calendars/src/agenda/reservation-list/index.js");
 __d(/* react-native-calendars/src/agenda/reservation-list/reservation.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -92632,17 +92833,17 @@ var _react2 = babelHelpers.interopRequireDefault(_react);
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _interface = require(1126             ); // 1126 = ../../interface
+var _interface = require(1129             ); // 1129 = ../../interface
 
-var _xdate = require(1124   ); // 1124 = xdate
+var _xdate = require(1127   ); // 1127 = xdate
 
 var _xdate2 = babelHelpers.interopRequireDefault(_xdate);
 
-var _dateutils = require(1125             ); // 1125 = ../../dateutils
+var _dateutils = require(1128             ); // 1128 = ../../dateutils
 
 var _dateutils2 = babelHelpers.interopRequireDefault(_dateutils);
 
-var _style = require(1146     ); // 1146 = ./style
+var _style = require(1149     ); // 1149 = ./style
 
 var _style2 = babelHelpers.interopRequireDefault(_style);
 
@@ -92759,7 +92960,7 @@ var ReservationListItem = function (_Component) {
 }(_react.Component);
 
 exports.default = ReservationListItem;
-}, 1145, null, "react-native-calendars/src/agenda/reservation-list/reservation.js");
+}, 1148, null, "react-native-calendars/src/agenda/reservation-list/reservation.js");
 __d(/* react-native-calendars/src/agenda/reservation-list/style.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -92767,7 +92968,7 @@ exports.default = styleConstructor;
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _style = require(1128         ); // 1128 = ../../style
+var _style = require(1131         ); // 1131 = ../../style
 
 var defaultStyle = babelHelpers.interopRequireWildcard(_style);
 
@@ -92805,7 +93006,7 @@ function styleConstructor() {
     }
   }, theme[STYLESHEET_ID] || {}));
 }
-}, 1146, null, "react-native-calendars/src/agenda/reservation-list/style.js");
+}, 1149, null, "react-native-calendars/src/agenda/reservation-list/style.js");
 __d(/* react-native-calendars/src/agenda/style.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -92813,11 +93014,11 @@ exports.default = styleConstructor;
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _style = require(1128      ); // 1128 = ../style
+var _style = require(1131      ); // 1131 = ../style
 
 var defaultStyle = babelHelpers.interopRequireWildcard(_style);
 
-var _platformStyle = require(1148              ); // 1148 = ./platform-style
+var _platformStyle = require(1151              ); // 1151 = ./platform-style
 
 var _platformStyle2 = babelHelpers.interopRequireDefault(_platformStyle);
 
@@ -92870,7 +93071,7 @@ function styleConstructor() {
     }
   }, theme[STYLESHEET_ID] || {}));
 }
-}, 1147, null, "react-native-calendars/src/agenda/style.js");
+}, 1150, null, "react-native-calendars/src/agenda/style.js");
 __d(/* react-native-calendars/src/agenda/platform-style.ios.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -92899,7 +93100,7 @@ function platformStyles(appStyle) {
     }
   };
 }
-}, 1148, null, "react-native-calendars/src/agenda/platform-style.ios.js");
+}, 1151, null, "react-native-calendars/src/agenda/platform-style.ios.js");
 __d(/* react-native-calendars/src/input.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -92945,7 +93146,7 @@ var VelocityTracker = exports.VelocityTracker = function () {
   }]);
   return VelocityTracker;
 }();
-}, 1149, null, "react-native-calendars/src/input.js");
+}, 1152, null, "react-native-calendars/src/input.js");
 __d(/* ePrescription/src/screens/addCoursePage.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -92963,7 +93164,13 @@ var _reactNative = require(25            ); // 25 = react-native
 
 var _nachosUi = require(349        ); // 349 = nachos-ui
 
-var _listItem = require(1120                             ); // 1120 = ./../components/shared/listItem
+var _reactNativeLoadingSpinnerOverlay = require(624                                   ); // 624 = react-native-loading-spinner-overlay
+
+var _reactNativeLoadingSpinnerOverlay2 = babelHelpers.interopRequireDefault(_reactNativeLoadingSpinnerOverlay);
+
+var _reactNativeBlur = require(1107               ); // 1107 = react-native-blur
+
+var _listItem = require(1123                             ); // 1123 = ./../components/shared/listItem
 
 var _listItem2 = babelHelpers.interopRequireDefault(_listItem);
 
@@ -92983,7 +93190,8 @@ var AddCourse = function (_Component) {
       courseName: '',
       courseDuration: 0,
       drugs: [],
-      plainDrugsList: []
+      plainDrugsList: [],
+      spinner: false
     };
     return _this;
   }
@@ -93003,7 +93211,7 @@ var AddCourse = function (_Component) {
         key: drug.drugName,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 24
+          lineNumber: 27
         }
       }));
       this.setState({ drugs: drugs, plainDrugsList: plainDrugsList });
@@ -93018,6 +93226,7 @@ var AddCourse = function (_Component) {
     value: function saveCourse() {
       var _this2 = this;
 
+      this.setState({ spinner: true });
       _feathers.app.service('users').update(_feathers.app.get('user')._id, {
         $push: { courses: {
             "finished": false,
@@ -93028,8 +93237,11 @@ var AddCourse = function (_Component) {
             "_id": ''
           } }
       }).then(function () {
+        _this2.setState({ spinner: false });
         _this2.props.navigator.pop({
           animated: true });
+      }).catch(function (err) {
+        _this2.setState({ spinner: false });
       });
     }
   }, {
@@ -93057,14 +93269,32 @@ var AddCourse = function (_Component) {
         _reactNative.View,
         { style: _styles.addCoursePageStyles.container, __source: {
             fileName: _jsxFileName,
-            lineNumber: 76
+            lineNumber: 83
           }
         },
+        _react2.default.createElement(
+          _reactNativeLoadingSpinnerOverlay2.default,
+          { visible: this.state.spinner, __source: {
+              fileName: _jsxFileName,
+              lineNumber: 84
+            }
+          },
+          _react2.default.createElement(_reactNativeBlur.BlurView, {
+            style: { flex: 1 },
+            viewRef: this.state.viewRef,
+            blurType: 'light',
+            blurAmount: 10,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 85
+            }
+          })
+        ),
         _react2.default.createElement(
           _reactNative.View,
           { style: _styles.addCoursePageStyles.cardContainer, __source: {
               fileName: _jsxFileName,
-              lineNumber: 77
+              lineNumber: 92
             }
           },
           _react2.default.createElement(_reactNative.TextInput, {
@@ -93075,7 +93305,7 @@ var AddCourse = function (_Component) {
               return _this3.setState({ courseName: courseName });
             }, __source: {
               fileName: _jsxFileName,
-              lineNumber: 78
+              lineNumber: 93
             }
           }),
           _react2.default.createElement(_reactNative.TextInput, {
@@ -93086,14 +93316,14 @@ var AddCourse = function (_Component) {
               return _this3.setState({ courseDuration: courseDuration });
             }, __source: {
               fileName: _jsxFileName,
-              lineNumber: 83
+              lineNumber: 98
             }
           }),
           _react2.default.createElement(
             _nachosUi.H1,
             { style: { color: '#000000' }, __source: {
                 fileName: _jsxFileName,
-                lineNumber: 88
+                lineNumber: 103
               }
             },
             'Drugs'
@@ -93113,7 +93343,7 @@ var AddCourse = function (_Component) {
                 animationType: 'slide-up' });
             }, __source: {
               fileName: _jsxFileName,
-              lineNumber: 90
+              lineNumber: 105
             }
           })
         ),
@@ -93128,7 +93358,7 @@ var AddCourse = function (_Component) {
               return _this3.saveCourse();
             }, __source: {
               fileName: _jsxFileName,
-              lineNumber: 103
+              lineNumber: 118
             }
           },
           'Save Course'
@@ -93145,7 +93375,7 @@ exports.default = AddCourse;
 AddCourse.propTypes = {
   navigator: _propTypes2.default.object
 };
-}, 1150, null, "ePrescription/src/screens/addCoursePage.js");
+}, 1153, null, "ePrescription/src/screens/addCoursePage.js");
 __d(/* ePrescription/src/screens/addDrugPage.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -93161,13 +93391,13 @@ var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _reactNativeDatepicker = require(1117                     ); // 1117 = react-native-datepicker
+var _reactNativeDatepicker = require(1120                     ); // 1120 = react-native-datepicker
 
 var _reactNativeDatepicker2 = babelHelpers.interopRequireDefault(_reactNativeDatepicker);
 
 var _nachosUi = require(349        ); // 349 = nachos-ui
 
-var _listItem = require(1120                             ); // 1120 = ./../components/shared/listItem
+var _listItem = require(1123                             ); // 1123 = ./../components/shared/listItem
 
 var _listItem2 = babelHelpers.interopRequireDefault(_listItem);
 
@@ -93355,7 +93585,7 @@ AddDrug.propTypes = {
   navigator: _propTypes2.default.object,
   applySavedDrug: _propTypes2.default.func
 };
-}, 1151, null, "ePrescription/src/screens/addDrugPage.js");
+}, 1154, null, "ePrescription/src/screens/addDrugPage.js");
 __d(/* ePrescription/src/screens/settingsPage.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -93373,7 +93603,7 @@ var _reactNative = require(25            ); // 25 = react-native
 
 var _nachosUi = require(349        ); // 349 = nachos-ui
 
-var _reactNativePushNotification = require(1109                            ); // 1109 = react-native-push-notification
+var _reactNativePushNotification = require(1112                            ); // 1112 = react-native-push-notification
 
 var _reactNativePushNotification2 = babelHelpers.interopRequireDefault(_reactNativePushNotification);
 
@@ -93453,7 +93683,7 @@ exports.default = SettingsPage;
 SettingsPage.propTypes = {
   navigator: _propTypes2.default.object
 };
-}, 1152, null, "ePrescription/src/screens/settingsPage.js");
+}, 1155, null, "ePrescription/src/screens/settingsPage.js");
 __d(/* ePrescription/src/screens/qrReaderPage.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -93469,7 +93699,7 @@ var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _reactNativeQrcodeScanner = require(1154                         ); // 1154 = react-native-qrcode-scanner
+var _reactNativeQrcodeScanner = require(1157                         ); // 1157 = react-native-qrcode-scanner
 
 var _reactNativeQrcodeScanner2 = babelHelpers.interopRequireDefault(_reactNativeQrcodeScanner);
 
@@ -93556,7 +93786,7 @@ exports.default = QRReader;
 QRReader.propTypes = {
   navigator: _propTypes2.default.object
 };
-}, 1153, null, "ePrescription/src/screens/qrReaderPage.js");
+}, 1156, null, "ePrescription/src/screens/qrReaderPage.js");
 __d(/* react-native-qrcode-scanner/index.js */function(global, require, module, exports) {'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -93574,7 +93804,7 @@ var _propTypes2 = babelHelpers.interopRequireDefault(_propTypes);
 
 var _reactNative = require(25            ); // 25 = react-native
 
-var _reactNativeCamera = require(1155                 ); // 1155 = react-native-camera
+var _reactNativeCamera = require(1158                 ); // 1158 = react-native-camera
 
 var _reactNativeCamera2 = babelHelpers.interopRequireDefault(_reactNativeCamera);
 
@@ -93853,7 +94083,7 @@ var styles = _reactNative.StyleSheet.create({
     backgroundColor: 'transparent'
   }
 });
-}, 1154, null, "react-native-qrcode-scanner/index.js");
+}, 1157, null, "react-native-qrcode-scanner/index.js");
 __d(/* react-native-camera/index.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -94153,5 +94383,5 @@ var RCTCamera = (0, _reactNative.requireNativeComponent)('RCTCamera', Camera, { 
 var styles = _reactNative.StyleSheet.create({
   base: {}
 });
-}, 1155, null, "react-native-camera/index.js");
+}, 1158, null, "react-native-camera/index.js");
 ;require(0);

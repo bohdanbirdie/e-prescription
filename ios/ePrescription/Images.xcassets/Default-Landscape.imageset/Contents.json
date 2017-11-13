@@ -1,0 +1,24 @@
+{
+  "images" : [
+    {
+      "idiom" : "ipad",
+      "filename" : "Default-Landscape~ipad.png",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "Default-Landscape@2x~ipad.png",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "Default-Landscape-736h.png",
+      "subtype" : "736h",
+      "scale" : "1x"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  }
+}
